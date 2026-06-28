@@ -5,7 +5,7 @@ export default function Footer() {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
                     <div className="lg:col-span-2">
                         <div className="mb-3">
-                            <img src="/logo.png" alt="Oilboards" className="h-8 w-auto" />
+                            <img src="/logo.png" alt="Oilboards" className="h-[37px] w-auto" />
                         </div>
                         <p className="text-[#6B7280] text-sm leading-relaxed max-w-xs">
                             Plataforma operativa petrolera · México<br />

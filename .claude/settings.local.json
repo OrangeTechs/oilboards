@@ -71,7 +71,13 @@
       "Bash(git init *)",
       "Bash(git ls-remote *)",
       "Bash(git add *)",
-      "Bash(grep -E \"\\\\.env\\( |$\\)\")"
+      "Bash(grep -E \"\\\\.env\\( |$\\)\")",
+      "Bash(git commit -q -m ' *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(sed -i 's#src=\"/logo.png\" alt=\"Oilboards\" className=\"h-8 w-auto\"#src=\"/logo.png\" alt=\"Oilboards\" className=\"h-[37px] w-auto\"#' resources/js/Components/Landing/Navbar.tsx resources/js/Components/Landing/Footer.tsx)",
+      "Bash(sed -i 's#src=\"/logo.png\" alt=\"Oilboards\" className=\"h-7 w-auto\"#src=\"/logo.png\" alt=\"Oilboards\" className=\"h-8 w-auto\"#' resources/js/Components/Demo/Sidebar.tsx)"
     ]
   }
 }

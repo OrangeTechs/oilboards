@@ -111,7 +111,7 @@ export default function Sidebar({ current, onChange }: Props) {
         <aside className="w-64 flex-shrink-0 bg-[#0B0F19] border-r border-[#1F2937] flex flex-col h-screen sticky top-0">
             <div className="px-5 py-4 border-b border-[#1F2937]">
                 <div className="flex items-center">
-                    <img src="/logo.png" alt="Oilboards" className="h-7 w-auto" />
+                    <img src="/logo.png" alt="Oilboards" className="h-8 w-auto" />
                 </div>
                 <button className="mt-3 w-full flex items-center justify-between glass rounded-lg px-3 py-2 text-xs text-[#9CA3AF] hover:text-white transition-colors">
                     <span className="truncate">Activo Litoral Tabasco</span>
