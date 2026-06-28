@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import 'maplibre-gl/dist/maplibre-gl.css';
+@import 'react-grid-layout/css/styles.css';
+@import 'react-resizable/css/styles.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+    background-color: #0B0F19;
+    color: #F9FAFB;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .text-neon {
+    color: #10B981;
+  }
+  .bg-card {
+    background-color: #1F2937;
+  }
+  .bg-secondary {
+    background-color: #111827;
+  }
+  .border-accent {
+    border-color: #374151;
+  }
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.pulse-alert {
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
+@keyframes alert-border-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+}
+.alert-pulse-red {
+  animation: alert-border-red 1.4s ease-in-out infinite;
+}
+
+@keyframes screen-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.screen-fade-in {
+  animation: screen-fade-in 0.22s ease-out forwards;
+}
+
+.pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+/* Scrollbar dark */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #111827; }
+::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #4B5563; }
+
+/* ---- Tesla-sleek shared utilities ---- */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.float-soft { animation: float-soft 6s ease-in-out infinite; }
+
+@keyframes grid-pan {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+.tech-grid {
+  background-image:
+    linear-gradient(rgba(16,185,129,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.glass {
+  background: rgba(17, 24, 39, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(55, 65, 81, 0.6);
+}
+
+.glow-green { box-shadow: 0 0 60px -12px rgba(16,185,129,0.45); }
+.glow-amber { box-shadow: 0 0 50px -12px rgba(245,158,11,0.4); }
+
+.text-gradient {
+  background: linear-gradient(135deg, #F9FAFB 30%, #6EE7B7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* MapLibre dark popup override */
+.maplibregl-popup-content {
+  background: #0B0F19 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 10px !important;
+  color: #F9FAFB !important;
+  padding: 10px 12px !important;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8) !important;
+}
+.maplibregl-popup-tip { border-top-color: #374151 !important; border-bottom-color: #374151 !important; }
+.maplibregl-popup-close-button { color: #9CA3AF !important; font-size: 16px !important; }
+.maplibregl-ctrl-attrib { background: rgba(11,15,25,0.6) !important; }
+.maplibregl-ctrl-attrib a { color: #6B7280 !important; }
+
+@keyframes ping-slow {
+  0% { transform: scale(1); opacity: 0.7; }
+  70%, 100% { transform: scale(2.6); opacity: 0; }
+}
+.map-pin-ring { animation: ping-slow 2.2s cubic-bezier(0,0,0.2,1) infinite; }
+
+/* react-grid-layout dark */
+.react-grid-item.react-grid-placeholder {
+  background: rgba(16,185,129,0.18) !important;
+  border: 1px dashed rgba(16,185,129,0.6);
+  border-radius: 10px;
+}
+.react-grid-item > .react-resizable-handle::after {
+  border-right-color: rgba(156,163,175,0.6) !important;
+  border-bottom-color: rgba(156,163,175,0.6) !important;
+}
+.react-grid-item.editing { cursor: move; }
+.react-grid-item.editing .drag-handle { cursor: move; }
