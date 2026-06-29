@@ -86,7 +86,10 @@
       "Bash(git commit -q -m 'Tablero Dirección: agregar Balance de Fiscalización \\(vs Pemex\\) *)",
       "Bash(git commit -q -m 'Sala: completar los 6 tableros — Campo, Ductos y EAM \\(banner + cerebro IA\\) *)",
       "Bash(echo \"EXIT=$?\")",
-      "Bash(git commit -q -m 'Sala: drawer derecho de pantallas con mini-previews \\(reemplaza barra de pestañas apretada\\) *)"
+      "Bash(git commit -q -m 'Sala: drawer derecho de pantallas con mini-previews \\(reemplaza barra de pestañas apretada\\) *)",
+      "Bash(pkill -f vite)",
+      "Bash(pkill -f \"tsc\")",
+      "Bash(git commit -q -m 'Sala: limpiar pantallas default — 3 tableros \\(Campo/Telemetria/Direccion\\) + Mi Sala *)"
     ]
   }
 }

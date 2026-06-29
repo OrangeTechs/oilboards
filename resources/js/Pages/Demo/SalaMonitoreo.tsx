@@ -1327,33 +1327,9 @@ const DEFAULT_SCREENS: { name: string; layout: LItem[] }[] = [
             { i: 'fiscal', x: 0, y: 10, w: 12, h: 2 },
         ],
     },
-    {
-        name: 'Sala Ejecutiva · Midstream',
-        layout: [
-            // Fila superior — el gancho: mapa del ducto + alerta huachicol + tramos
-            { i: 'ductoMapa', x: 0, y: 0, w: 5, h: 4 }, { i: 'ductoAlerta', x: 5, y: 0, w: 4, h: 4 }, { i: 'ductoSegmentos', x: 9, y: 0, w: 3, h: 4 },
-            // Fila media — perfil de presión + balance
-            { i: 'ductoPerfil', x: 0, y: 4, w: 9, h: 2 }, { i: 'ductoBalance', x: 9, y: 4, w: 3, h: 2 },
-            // Fila inferior — salud de activos + tendencia ESG + aprovechamiento de gas
-            { i: 'eamSalud', x: 0, y: 6, w: 5, h: 3 }, { i: 'esgTendencia', x: 5, y: 6, w: 4, h: 3 }, { i: 'esgAprov', x: 9, y: 6, w: 3, h: 3 },
-        ],
-    },
-    {
-        // TABLERO ESG (director / responsable ambiental): los 6 bloques individuales
-        // del tablero, ya acomodados e interconectados (misma data). Cada uno es
-        // independiente: se puede mover, redimensionar o quitar.
-        name: 'Tablero ESG',
-        layout: [
-            { i: 'esgBanner', x: 0, y: 0, w: 12, h: 1 },
-            { i: 'esgKpis', x: 0, y: 1, w: 12, h: 2 },
-            { i: 'esgTendencia', x: 0, y: 3, w: 7, h: 3 },
-            { i: 'esgCo2Chart', x: 7, y: 3, w: 5, h: 3 },
-            { i: 'esgCausaRaiz', x: 0, y: 6, w: 7, h: 4 },
-            { i: 'esgCompliance', x: 7, y: 6, w: 5, h: 2 },
-            { i: 'esgRecomendIA', x: 7, y: 8, w: 5, h: 2 },
-        ],
-    },
-    { name: 'Custom', layout: [] },
+    // "Mi Sala" — pantalla vacía para que el usuario arme la suya (arrastra tableros
+    // completos ESG/Ductos/EAM como grupos insertables, o bloques sueltos).
+    { name: 'Mi Sala', layout: [] },
 ];
 
 // ---------------------------------------------------------------------------
@@ -2004,7 +1980,7 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
 
     // Fase 3: agregar nueva pantalla
     const addScreen = () => {
-        const newName = `Custom ${screens.length - 2}`;
+        const newName = `Mi Sala ${screens.length - 2}`;
         setScreens((prev) => [...prev, { name: newName, layout: [] }]);
         const newIdx = screens.length;
         setFadeKey((k) => k + 1);
