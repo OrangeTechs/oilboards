@@ -90,7 +90,8 @@
       "Bash(pkill -f vite)",
       "Bash(pkill -f \"tsc\")",
       "Bash(git commit -q -m 'Sala: limpiar pantallas default — 3 tableros \\(Campo/Telemetria/Direccion\\) + Mi Sala *)",
-      "Bash(git commit -q -m 'Sala: entrada por '\\\\''la pared'\\\\'' \\(overview de salas\\) — vende el concepto multi-pantalla *)"
+      "Bash(git commit -q -m 'Sala: entrada por '\\\\''la pared'\\\\'' \\(overview de salas\\) — vende el concepto multi-pantalla *)",
+      "Bash(git commit -q -m 'Tablero Telemetria: expandir Matriz y Recomendacion IA 1 fila \\(sin huecos\\) *)"
     ]
   }
 }

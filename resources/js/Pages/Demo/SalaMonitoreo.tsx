@@ -1249,18 +1249,18 @@ const GROUPS: Record<string, GroupDef> = {
         ],
     },
     telemetriaTablero: {
-        title: 'Tablero Telemetría · Completo', color: C.blue, cat: 'Telemetría', Icon: LayoutTemplate, w: 12, h: 10,
+        title: 'Tablero Telemetría · Completo', color: C.blue, cat: 'Telemetría', Icon: LayoutTemplate, w: 12, h: 11,
         desc: 'Inserta el Tablero de Telemetría: encabezado, matriz de pozos, SCADA THP/FLP, gauges del motor (Hz/Amp/Vib) + PIP, carta dinamométrica y el diagnóstico IA de gas-lock. Cada bloque queda independiente.',
         items: [
             { i: 'telemBanner',     dx: 0,  dy: 0, w: 12, h: 1 },
-            { i: 'matriz',          dx: 0,  dy: 1, w: 4,  h: 5 },
+            { i: 'matriz',          dx: 0,  dy: 1, w: 4,  h: 6 },
             { i: 'scadaDual',       dx: 4,  dy: 1, w: 8,  h: 3 },
             { i: 'gaugeHz',         dx: 4,  dy: 4, w: 2,  h: 3 },
             { i: 'gaugeAmp',        dx: 6,  dy: 4, w: 2,  h: 3 },
             { i: 'gaugeVib',        dx: 8,  dy: 4, w: 2,  h: 3 },
             { i: 'gaugePIP',        dx: 10, dy: 4, w: 2,  h: 3 },
-            { i: 'dynacard',        dx: 0,  dy: 6, w: 5,  h: 4 },
-            { i: 'telemRecomendIA', dx: 5,  dy: 7, w: 7,  h: 3 },
+            { i: 'dynacard',        dx: 0,  dy: 7, w: 5,  h: 4 },
+            { i: 'telemRecomendIA', dx: 5,  dy: 7, w: 7,  h: 4 },
         ],
     },
     esgTablero: {
@@ -1307,12 +1307,12 @@ const DEFAULT_SCREENS: { name: string; layout: LItem[] }[] = [
         name: 'Tablero Telemetría',
         layout: [
             { i: 'telemBanner', x: 0, y: 0, w: 12, h: 1 },
-            { i: 'matriz', x: 0, y: 1, w: 4, h: 5 },
+            { i: 'matriz', x: 0, y: 1, w: 4, h: 6 },
             { i: 'scadaDual', x: 4, y: 1, w: 8, h: 3 },
             { i: 'gaugeHz', x: 4, y: 4, w: 2, h: 3 }, { i: 'gaugeAmp', x: 6, y: 4, w: 2, h: 3 },
             { i: 'gaugeVib', x: 8, y: 4, w: 2, h: 3 }, { i: 'gaugePIP', x: 10, y: 4, w: 2, h: 3 },
-            { i: 'dynacard', x: 0, y: 6, w: 5, h: 4 },
-            { i: 'telemRecomendIA', x: 5, y: 7, w: 7, h: 3 },
+            { i: 'dynacard', x: 0, y: 7, w: 5, h: 4 },
+            { i: 'telemRecomendIA', x: 5, y: 7, w: 7, h: 4 },
         ],
     },
     {
