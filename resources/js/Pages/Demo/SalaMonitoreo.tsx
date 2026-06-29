@@ -55,6 +55,7 @@ import {
 import {
     DuctosBanner, EamBanner,
 } from '@/Components/Demo/composites/DuctosEamPanel';
+import { useTelemWellId, setTelemWell } from '@/lib/telemSelection';
 import { Tooltip } from '@/Components/ui/Tooltip';
 import { DEMO_ASSET, DEMO_WELLS, DEMO_EVENTS, DEMO_MONTHLY_DATA, DEMO_NPT_BY_CATEGORY, STATUS_META,
     DEMO_PIPELINE_KPIS, DEMO_PIPELINE_ALERT, DEMO_PIPELINE_SEGMENTS, DEMO_PIPELINE_PRESSURE,
@@ -232,6 +233,30 @@ const GaugeW = memo(function GaugeW({ skey, base, max, color, label, unit, drift
     );
 });
 
+// Gauge del Tablero Telemetría que SIGUE al pozo seleccionado (estado compartido).
+// Lee la variable del pozo en foco; pozo parado/sin motor → 0 en gris.
+const TELEM_GAUGE: Record<string, { get: (w: typeof DEMO_WELLS[0]) => number; max: number; color: string; label: string; unit: string; drift?: number; amp?: number }> = {
+    hz:  { get: (w) => w.motorHz,      max: 70,   color: C.green,  label: 'Frec', unit: 'Hz' },
+    amp: { get: (w) => w.motorAmp,     max: 65,   color: C.yellow, label: 'Corr', unit: 'A',    drift: 0.04 },
+    vib: { get: (w) => w.vibrationMms, max: 1.5,  color: C.red,    label: 'Vib',  unit: 'mm/s', drift: 0.002, amp: 0.03 },
+    pip: { get: (w) => w.pipPsi,       max: 2000, color: C.red,    label: 'PIP',  unit: 'psi',  drift: -0.4, amp: 4 },
+};
+function TelemGaugeW({ variable }: { variable: 'hz' | 'amp' | 'vib' | 'pip' }) {
+    const wellId = useTelemWellId();
+    const w = DEMO_WELLS.find((x) => x.id === wellId) ?? DEMO_WELLS[0];
+    const cfg = TELEM_GAUGE[variable];
+    const base = cfg.get(w);
+    const off = base <= 0;
+    return (
+        <div className="relative h-full w-full">
+            <GaugeW skey={`telem-${variable}-${wellId}`} base={base} max={cfg.max}
+                color={off ? C.muted : cfg.color} label={cfg.label} unit={cfg.unit}
+                drift={off ? 0 : (cfg.drift ?? 0)} amp={off ? 0 : cfg.amp} />
+            <span className="absolute top-1 left-1 text-[7px] font-mono text-[#6B7280] pointer-events-none">{w.name}</span>
+        </div>
+    );
+}
+
 const CounterW = memo(function CounterW({ skey, start, step, color, sub }: { skey: string; start: number; step: number; color: string; sub: string }) {
     const v = useCounterSignal(skey, start, step);
     return (
@@ -251,12 +276,16 @@ const StatW = memo(function StatW({ value, color, sub }: { value: string; color:
 });
 const MatrizW = memo(function MatrizW() {
     const thp102 = useSignal('matriz-thp102', { base: 298, amplitude: 1.2, drift: -0.4, min: 262, max: 300 });
+    const selectedId = useTelemWellId();
     return (
         <div className="grid grid-cols-2 gap-1.5 h-full">
             {DEMO_WELLS.map((w) => {
                 const thp = w.id === 'pozo-102h' ? thp102 : w.thpPsi;
+                const sel = w.id === selectedId;
                 return (
-                    <div key={w.id} className="row-3d border-l-2 px-2 py-1 flex flex-col justify-center min-h-0 relative overflow-hidden" style={{ borderColor: STATUS_META[w.status].color, boxShadow: `inset 6px 0 12px -6px ${hexA(STATUS_META[w.status].color, 0.5)}` }}>
+                    <button key={w.id} onClick={() => setTelemWell(w.id)} title={`Enfocar ${w.name} en el tablero`}
+                        className="row-3d border-l-2 px-2 py-1 flex flex-col justify-center min-h-0 relative overflow-hidden text-left cursor-pointer transition-all"
+                        style={{ borderColor: STATUS_META[w.status].color, boxShadow: sel ? `inset 6px 0 12px -6px ${hexA(STATUS_META[w.status].color, 0.5)}, 0 0 0 1.5px ${hexA('#fff', 0.55)}` : `inset 6px 0 12px -6px ${hexA(STATUS_META[w.status].color, 0.5)}` }}>
                         <div className="flex items-center justify-between">
                             <span className="text-[9px] font-bold text-white truncate">{w.name}</span>
                             <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 dot-halo" style={{ backgroundColor: STATUS_META[w.status].color, ['--hc' as any]: hexA(STATUS_META[w.status].color, 0.6) }} />
@@ -264,7 +293,7 @@ const MatrizW = memo(function MatrizW() {
                         <span className="text-[11px] font-mono font-bold" style={{ color: STATUS_META[w.status].color, textShadow: `0 0 8px ${hexA(STATUS_META[w.status].color, 0.5)}` }}>
                             {thp > 0 ? `${Math.round(thp)} psi` : w.status === 'down' ? 'PARADO' : 'INTERV.'}
                         </span>
-                    </div>
+                    </button>
                 );
             })}
         </div>
@@ -810,9 +839,18 @@ const DuctoMapaW = memo(function DuctoMapaW() {
 
 // Monitor SCADA · THP/FLP doble eje 24h con umbral de alerta
 const ScadaDualW = memo(function ScadaDualW() {
-    const live = useSignal('scada-thp102', { base: 298, amplitude: 1.2, drift: -0.35, min: 262, max: 300 });
+    const wellId = useTelemWellId();
+    const w = DEMO_WELLS.find((x) => x.id === wellId) ?? DEMO_WELLS[0];
+    const isAlert = w.status === 'alert';            // gas-lock → curva en declive
+    const live = useSignal(`scada-thp-${wellId}`, { base: w.thpPsi || 0, amplitude: w.thpPsi ? 1.2 : 0, drift: isAlert ? -0.35 : 0, min: 0, max: Math.max(1, w.thpPsi + 4) });
     const option = useMemo(() => {
-        const thp = DEMO_THP_SERIES.map((d, i) => i === DEMO_THP_SERIES.length - 1 ? Math.round(live) : d.thp);
+        // Pozo en alerta: la curva de gas-lock real. Resto: línea estable a su THP/FLP.
+        const thp = isAlert
+            ? DEMO_THP_SERIES.map((d, i) => i === DEMO_THP_SERIES.length - 1 ? Math.round(live) : d.thp)
+            : DEMO_THP_SERIES.map((_, i) => Math.round((w.thpPsi + Math.sin(i / 6) * 1.2) * 10) / 10);
+        const flp = isAlert
+            ? DEMO_THP_SERIES.map((d) => d.flp)
+            : DEMO_THP_SERIES.map((_, i) => Math.round((w.flpPsi + Math.sin(i / 6 + 1) * 1) * 10) / 10);
         return {
             backgroundColor: 'transparent', grid: { left: 30, right: 30, top: 22, bottom: 18 },
             legend: { data: ['THP', 'FLP'], textStyle: { color: C.faint, fontSize: 8 }, top: 0, itemWidth: 10, itemHeight: 4 },
@@ -824,13 +862,13 @@ const ScadaDualW = memo(function ScadaDualW() {
             ],
             series: [
                 { name: 'THP', type: 'line', data: thp, smooth: true, symbol: 'none', lineStyle: { color: C.green, width: 2, shadowColor: hexA(C.green, 0.6), shadowBlur: 0 }, areaStyle: { color: areaGradient(C.green, 0.28) },
-                  markArea: { silent: true, itemStyle: { color: 'rgba(239,68,68,0.10)' }, data: [[{ xAxis: '06:00' }, { xAxis: '23:00' }]] },
-                  markLine: { silent: true, symbol: 'none', data: [{ yAxis: 280, lineStyle: { color: C.red, type: 'dashed', width: 1 }, label: { formatter: 'umbral 280', color: C.red, fontSize: 7 } }] } },
-                { name: 'FLP', type: 'line', yAxisIndex: 1, data: DEMO_THP_SERIES.map((d) => d.flp), smooth: true, symbol: 'none', lineStyle: { color: C.blue, width: 1.8, shadowColor: hexA(C.blue, 0.5), shadowBlur: 0 } },
+                  markArea: isAlert ? { silent: true, itemStyle: { color: 'rgba(239,68,68,0.10)' }, data: [[{ xAxis: '06:00' }, { xAxis: '23:00' }]] } : undefined,
+                  markLine: isAlert ? { silent: true, symbol: 'none', data: [{ yAxis: 280, lineStyle: { color: C.red, type: 'dashed', width: 1 }, label: { formatter: 'umbral 280', color: C.red, fontSize: 7 } }] } : undefined },
+                { name: 'FLP', type: 'line', yAxisIndex: 1, data: flp, smooth: true, symbol: 'none', lineStyle: { color: C.blue, width: 1.8, shadowColor: hexA(C.blue, 0.5), shadowBlur: 0 } },
             ],
         };
-    }, [live]);
-    return <ReactECharts option={option} notMerge={false} lazyUpdate style={{ height: '100%', minHeight: 120 }} />;
+    }, [live, wellId, w.thpPsi, w.flpPsi, isAlert]);
+    return <ReactECharts option={option} notMerge style={{ height: '100%', minHeight: 120 }} />;
 });
 
 // Monitor de Tanques · nivel de crudo + interfase de agua + %AyS
@@ -1008,10 +1046,10 @@ const WIDGETS: Record<string, WidgetDef> = {
     thp102:      { title: 'THP POZO-102H ↓',         color: C.yellow, w: 3, h: 2, render: () => <MiniLine skey="thp102" color={C.yellow} base={300} drift={1.2} /> },
     thp101:      { title: 'THP POZO-101H',           color: C.green,  w: 3, h: 2, render: () => <MiniLine skey="thp101" color={C.green}  base={342} /> },
     thp105:      { title: 'THP POZO-105H',           color: C.green,  w: 3, h: 2, render: () => <MiniLine skey="thp105" color={C.green}  base={388} /> },
-    gaugeHz:     { title: 'Motor 102H · Hz',         color: C.green,  w: 2, h: 3, render: () => <GaugeW skey="gaugeHz"  base={52}   max={70}  color={C.green}  label="Frec" unit="Hz"   /> },
-    gaugeAmp:    { title: 'Motor 102H · Amp',        color: C.yellow, w: 2, h: 3, render: () => <GaugeW skey="gaugeAmp" base={48}   max={65}  color={C.yellow} label="Corr" unit="A"    drift={0.04} /> },
-    gaugeVib:    { title: 'Motor 102H · Vib',        color: C.red,    w: 2, h: 3, render: () => <GaugeW skey="gaugeVib" base={0.87} max={1.5} color={C.red}    label="Vib"  unit="mm/s" drift={0.002} amp={0.03} /> },
-    gaugePIP:    { title: 'PIP · POZO-102H ↓',       color: C.red,    w: 2, h: 3, render: () => <GaugeW skey="gaugePIP" base={820}  max={2000} color={C.red}   label="PIP"  unit="psi"  drift={-0.6} amp={4} /> },
+    gaugeHz:     { title: 'Motor · Frecuencia',      color: C.green,  w: 2, h: 3, render: () => <TelemGaugeW variable="hz" /> },
+    gaugeAmp:    { title: 'Motor · Corriente',       color: C.yellow, w: 2, h: 3, render: () => <TelemGaugeW variable="amp" /> },
+    gaugeVib:    { title: 'Motor · Vibración',       color: C.red,    w: 2, h: 3, render: () => <TelemGaugeW variable="vib" /> },
+    gaugePIP:    { title: 'PIP · Admisión bomba',    color: C.red,    w: 2, h: 3, render: () => <TelemGaugeW variable="pip" /> },
     telemBanner: { title: 'Encabezado · Telemetría', color: C.blue,   w: 12, h: 1, noConfig: true, render: () => <TelemetriaBanner /> },
     telemRecomendIA: { title: 'Recomendación IA · Gas-Lock', color: C.yellow, w: 7, h: 3, noConfig: true, render: () => <TelemetriaRecomendacionIA /> },
     prodMes:     { title: 'Producción del Mes',      color: C.green,  w: 3, h: 2, render: () => <CounterW skey="prodMes" start={72450} step={3} color="#fff"   sub="bbl netos · Jun 2026 · ↑4.1%" /> },
@@ -1136,10 +1174,10 @@ const WIDGET_DESC: Record<string, string> = {
     thp102: 'Tendencia de presión THP del POZO-102H (en alerta, cayendo).',
     thp101: 'Tendencia de presión THP del POZO-101H.',
     thp105: 'Tendencia de presión THP del POZO-105H.',
-    gaugeHz: 'Frecuencia del variador del motor BEC del POZO-102H (Hz).',
-    gaugeAmp: 'Corriente del motor del POZO-102H (A).',
-    gaugeVib: 'Vibración del motor del POZO-102H (mm/s).',
-    gaugePIP: 'Presión de admisión de la bomba (PIP) del POZO-102H — la variable clave del gas-lock (cayendo).',
+    gaugeHz: 'Frecuencia del variador del motor — sigue al pozo seleccionado en el banner.',
+    gaugeAmp: 'Corriente del motor — sigue al pozo seleccionado en el banner.',
+    gaugeVib: 'Vibración del motor — sigue al pozo seleccionado en el banner.',
+    gaugePIP: 'Presión de admisión de la bomba (PIP), variable clave del gas-lock — sigue al pozo seleccionado.',
     telemBanner: 'Encabezado del Tablero Telemetría: módulo, telemetría en vivo y pozo en foco.',
     telemRecomendIA: 'Diagnóstico IA de gas-lock derivado de PIP + amperaje + vibración del pozo en alerta.',
     prodMes: 'Producción neta acumulada del mes.',
@@ -1195,7 +1233,7 @@ interface GroupItem { i: string; dx: number; dy: number; w: number; h: number; b
 interface GroupDef { title: string; color: string; cat: string; Icon: any; desc: string; w: number; h: number; items: GroupItem[] }
 const GROUPS: Record<string, GroupDef> = {
     ductosTablero: {
-        title: 'Tablero Ductos · Completo', color: C.blue, cat: 'Ductos', Icon: LayoutTemplate, w: 12, h: 9,
+        title: 'Tablero Ductos · Completo', color: C.blue, cat: 'Ductos', Icon: LayoutTemplate, w: 12, h: 8,
         desc: 'Inserta el Tablero de Ductos: encabezado, mapa del ducto, alerta de toma clandestina (cerebro), tramos, perfil de presión y balance. Cada bloque independiente.',
         items: [
             { i: 'ductosBanner',   dx: 0, dy: 0, w: 12, h: 1 },
@@ -1207,7 +1245,7 @@ const GROUPS: Record<string, GroupDef> = {
         ],
     },
     eamTablero: {
-        title: 'Tablero Mantenimiento · Completo', color: C.purple, cat: 'Mantenimiento', Icon: LayoutTemplate, w: 12, h: 8,
+        title: 'Tablero Mantenimiento · Completo', color: C.purple, cat: 'Mantenimiento', Icon: LayoutTemplate, w: 12, h: 7,
         desc: 'Inserta el Tablero de Mantenimiento (EAM): encabezado, salud de activos, flujo IA→refacción→orden (cerebro) y órdenes de trabajo. Cada bloque independiente.',
         items: [
             { i: 'eamBanner',  dx: 0, dy: 0, w: 12, h: 1 },

@@ -91,7 +91,10 @@
       "Bash(pkill -f \"tsc\")",
       "Bash(git commit -q -m 'Sala: limpiar pantallas default — 3 tableros \\(Campo/Telemetria/Direccion\\) + Mi Sala *)",
       "Bash(git commit -q -m 'Sala: entrada por '\\\\''la pared'\\\\'' \\(overview de salas\\) — vende el concepto multi-pantalla *)",
-      "Bash(git commit -q -m 'Tablero Telemetria: expandir Matriz y Recomendacion IA 1 fila \\(sin huecos\\) *)"
+      "Bash(git commit -q -m 'Tablero Telemetria: expandir Matriz y Recomendacion IA 1 fila \\(sin huecos\\) *)",
+      "Bash(perl -0pi -e \"s/\\(title: 'Tablero Ductos · Completo', color: C\\\\.blue, cat: 'Ductos', Icon: LayoutTemplate, w: 12, h: \\)9/\\\\${1}8/\" resources/js/Pages/Demo/SalaMonitoreo.tsx)",
+      "Bash(perl -0pi -e \"s/\\(title: 'Tablero Mantenimiento · Completo', color: C\\\\.purple, cat: 'Mantenimiento', Icon: LayoutTemplate, w: 12, h: \\)8/\\\\${1}7/\" resources/js/Pages/Demo/SalaMonitoreo.tsx)",
+      "Bash(git commit -q -m 'Telemetria: selector de pozo en foco \\(banner + matriz clickeable\\) — gauges/SCADA/recomendacion siguen al pozo *)"
     ]
   }
 }
