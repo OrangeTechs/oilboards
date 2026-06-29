@@ -1177,7 +1177,7 @@ interface GroupItem { i: string; dx: number; dy: number; w: number; h: number; b
 interface GroupDef { title: string; color: string; cat: string; Icon: any; desc: string; w: number; h: number; items: GroupItem[] }
 const GROUPS: Record<string, GroupDef> = {
     direccionTablero: {
-        title: 'Tablero Dirección · Completo', color: C.purple, cat: 'Dirección', Icon: LayoutTemplate, w: 12, h: 10,
+        title: 'Tablero Dirección · Completo', color: C.purple, cat: 'Dirección', Icon: LayoutTemplate, w: 12, h: 12,
         desc: 'Inserta el Tablero de Dirección: encabezado, KPIs ejecutivos, cumplimiento CNE, pronóstico de cierre vs meta, NPT Pareto, curva de declinación, balance de fiscalización y la recomendación IA. Cada bloque independiente.',
         items: [
             { i: 'dirBanner',     dx: 0,  dy: 0, w: 12, h: 1 },
@@ -1190,6 +1190,7 @@ const GROUPS: Record<string, GroupDef> = {
             { i: 'npt',           dx: 0,  dy: 6, w: 4,  h: 4 },
             { i: 'declinacion',   dx: 4,  dy: 6, w: 3,  h: 4 },
             { i: 'dirRecomendIA', dx: 7,  dy: 6, w: 5,  h: 4 },
+            { i: 'fiscal',        dx: 0,  dy: 10, w: 12, h: 2 },
         ],
     },
     telemetriaTablero: {
@@ -1266,6 +1267,7 @@ const DEFAULT_SCREENS: { name: string; layout: LItem[] }[] = [
             { i: 'prodMes', x: 0, y: 1, w: 3, h: 2 }, { i: 'uptime', x: 3, y: 1, w: 3, h: 2 }, { i: 'gasComerc', x: 6, y: 1, w: 3, h: 2 }, { i: 'bsw', x: 9, y: 1, w: 3, h: 2 },
             { i: 'cne', x: 0, y: 3, w: 6, h: 3 }, { i: 'dirPronostico', x: 6, y: 3, w: 6, h: 3 },
             { i: 'npt', x: 0, y: 6, w: 4, h: 4 }, { i: 'declinacion', x: 4, y: 6, w: 3, h: 4 }, { i: 'dirRecomendIA', x: 7, y: 6, w: 5, h: 4 },
+            { i: 'fiscal', x: 0, y: 10, w: 12, h: 2 },
         ],
     },
     {

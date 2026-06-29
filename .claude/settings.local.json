@@ -82,7 +82,8 @@
       "Bash(curl -s -o /dev/null -w \"code:%{http_code} type:%{content_type} size:%{size_download}\\\\n\" https://oilboards.com/audio/bitacora-pozo-101h.mp3)",
       "Bash(xxd public/audio/bitacora-pozo-101h.mp3)",
       "mcp__Claude_in_Chrome__tabs_context_mcp",
-      "Bash(git commit -q -m 'Sala de Monitoreo: tableros compuestos \\(ESG, Telemetría, Dirección\\) + contexto de activo *)"
+      "Bash(git commit -q -m 'Sala de Monitoreo: tableros compuestos \\(ESG, Telemetría, Dirección\\) + contexto de activo *)",
+      "Bash(git commit -q -m 'Tablero Dirección: agregar Balance de Fiscalización \\(vs Pemex\\) *)"
     ]
   }
 }
