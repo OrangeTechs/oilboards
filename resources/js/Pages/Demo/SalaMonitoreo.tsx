@@ -49,6 +49,12 @@ import {
 import {
     DireccionBanner, DireccionPronostico, DireccionRecomendacionIA,
 } from '@/Components/Demo/composites/DireccionPanel';
+import {
+    CampoBanner, CampoRecomendacionIA,
+} from '@/Components/Demo/composites/CampoPanel';
+import {
+    DuctosBanner, EamBanner,
+} from '@/Components/Demo/composites/DuctosEamPanel';
 import { Tooltip } from '@/Components/ui/Tooltip';
 import { DEMO_ASSET, DEMO_WELLS, DEMO_EVENTS, DEMO_MONTHLY_DATA, DEMO_NPT_BY_CATEGORY, STATUS_META,
     DEMO_PIPELINE_KPIS, DEMO_PIPELINE_ALERT, DEMO_PIPELINE_SEGMENTS, DEMO_PIPELINE_PRESSURE,
@@ -1015,6 +1021,8 @@ const WIDGETS: Record<string, WidgetDef> = {
     bsw:         { title: 'BSW Promedio',            color: C.blue,   w: 3, h: 1, render: () => <StatW value="18.2%"  color={C.blue}   sub="agua y sedimento" /> },
     alertas:     { title: 'Alertas Activas',         color: C.red,    w: 4, h: 2, render: () => <AlertasW /> },
     eventos:     { title: 'Bitácora de Eventos',     color: C.blue,   w: 6, h: 2, render: () => <EventosW /> },
+    campoBanner: { title: 'Encabezado · Campo',      color: C.green,  w: 12, h: 1, noConfig: true, render: () => <CampoBanner /> },
+    campoRecomendIA: { title: 'Recomendación IA · Campo', color: C.green, w: 5, h: 2, noConfig: true, render: () => <CampoRecomendacionIA /> },
     cne:         { title: 'Cumplimiento CNE/SENER',  color: C.blue,   w: 5, h: 3, render: () => <CneW /> },
     npt:         { title: 'NPT por Causa',           color: C.purple, w: 4, h: 3, render: () => <NptW /> },
     declinacion: { title: 'Curva de Declinación',    color: C.yellow, w: 5, h: 2, render: () => <DeclinacionW /> },
@@ -1031,10 +1039,12 @@ const WIDGETS: Record<string, WidgetDef> = {
     ductoBalance:   { title: 'Balance del Ducto',         color: C.green,  w: 3, h: 2, render: () => <DuctoBalanceW /> },
     ductoAlerta:    { title: 'Alerta Huachicol / Fuga',   color: C.red,    w: 4, h: 3, render: () => <DuctoAlertaW /> },
     ductoSegmentos: { title: 'Tramos del Ducto',          color: C.blue,   w: 4, h: 3, render: () => <DuctoSegmentosW /> },
+    ductosBanner:   { title: 'Encabezado · Ductos',       color: C.blue,   w: 12, h: 1, noConfig: true, render: () => <DuctosBanner /> },
     // ── Módulo 05 · EAM ──
     eamSalud:       { title: 'Salud de Activos',          color: C.purple, w: 5, h: 3, render: () => <EamSaludW /> },
     eamFlujo:       { title: 'IA → Refacción → Orden',    color: C.purple, w: 4, h: 2, render: () => <EamFlujoW /> },
     eamOrdenes:     { title: 'Órdenes de Trabajo',        color: C.purple, w: 4, h: 2, render: () => <EamOrdenesW /> },
+    eamBanner:      { title: 'Encabezado · Mantenimiento', color: C.purple, w: 12, h: 1, noConfig: true, render: () => <EamBanner /> },
     // ── Módulo 06 · ESG ──
     esgAprov:       { title: 'Aprovechamiento de Gas',    color: C.green,  w: 2, h: 3, render: () => <EsgAprovGaugeW /> },
     esgCo2:         { title: 'CO₂e Emitido',              color: C.yellow, w: 3, h: 2, render: () => <EsgCo2W /> },
@@ -1062,6 +1072,8 @@ const WIDGET_INFO: Record<string, { cat: string; Icon: any }> = {
     ductoMapa:   { cat: 'Ductos',     Icon: Map          },
     fiscal:      { cat: 'Dirección',  Icon: Shield       },
     hseEnergia:  { cat: 'Campo',      Icon: Flame        },
+    campoBanner: { cat: 'Campo',      Icon: ClipboardList},
+    campoRecomendIA: { cat: 'Campo',  Icon: Brain        },
     nptTabla:    { cat: 'Dirección',  Icon: PieChart     },
     thp102:      { cat: 'Telemetría', Icon: Activity     },
     thp101:      { cat: 'Telemetría', Icon: Activity     },
@@ -1090,9 +1102,11 @@ const WIDGET_INFO: Record<string, { cat: string; Icon: any }> = {
     ductoBalance:   { cat: 'Ductos',       Icon: GitBranch     },
     ductoAlerta:    { cat: 'Ductos',       Icon: AlertTriangle },
     ductoSegmentos: { cat: 'Ductos',       Icon: GitBranch     },
+    ductosBanner:   { cat: 'Ductos',       Icon: GitBranch     },
     eamSalud:       { cat: 'Mantenimiento', Icon: Wrench        },
     eamFlujo:       { cat: 'Mantenimiento', Icon: Wrench        },
     eamOrdenes:     { cat: 'Mantenimiento', Icon: ClipboardList },
+    eamBanner:      { cat: 'Mantenimiento', Icon: Wrench        },
     esgAprov:       { cat: 'ESG',           Icon: Leaf          },
     esgCo2:         { cat: 'ESG',           Icon: Flame         },
     esgIntensidad:  { cat: 'ESG',           Icon: Leaf          },
@@ -1135,6 +1149,8 @@ const WIDGET_DESC: Record<string, string> = {
     bsw: 'BSW promedio del activo (agua y sedimento).',
     alertas: 'Alertas activas del activo en este momento.',
     eventos: 'Bitácora cronológica de eventos del turno.',
+    campoBanner: 'Encabezado del Tablero Campo: módulo, turno y pozos activos.',
+    campoRecomendIA: 'Estado operativo del turno: pozos parados/intervención y prioridad de acción.',
     cne: 'Cumplimiento CNE/SENER: meta vs. real por mes.',
     npt: 'Distribución del tiempo no productivo (NPT) por causa.',
     declinacion: 'Curva de declinación de producción.',
@@ -1152,6 +1168,8 @@ const WIDGET_DESC: Record<string, string> = {
     eamSalud: 'Días estimados a falla de cada activo físico.',
     eamFlujo: 'Flujo: predicción IA → refacción en bodega → orden de trabajo.',
     eamOrdenes: 'Órdenes de trabajo abiertas, con folio y estado.',
+    ductosBanner: 'Encabezado del Tablero Ductos: módulo, balance de transporte y estatus de integridad.',
+    eamBanner: 'Encabezado del Tablero Mantenimiento: módulo, predictivo y activos críticos.',
     esgAprov: 'Aprovechamiento de gas vs. meta CNE.',
     esgCo2: 'Toneladas de CO₂e emitidas hoy y en el mes.',
     esgIntensidad: 'Intensidad de emisiones (kg CO₂e por barril).',
@@ -1176,6 +1194,43 @@ const defOf  = (uid: string): WidgetDef | undefined => WIDGETS[typeOf(uid)];
 interface GroupItem { i: string; dx: number; dy: number; w: number; h: number; binding?: Binding; compare?: CompareCfg }
 interface GroupDef { title: string; color: string; cat: string; Icon: any; desc: string; w: number; h: number; items: GroupItem[] }
 const GROUPS: Record<string, GroupDef> = {
+    ductosTablero: {
+        title: 'Tablero Ductos · Completo', color: C.blue, cat: 'Ductos', Icon: LayoutTemplate, w: 12, h: 9,
+        desc: 'Inserta el Tablero de Ductos: encabezado, mapa del ducto, alerta de toma clandestina (cerebro), tramos, perfil de presión y balance. Cada bloque independiente.',
+        items: [
+            { i: 'ductosBanner',   dx: 0, dy: 0, w: 12, h: 1 },
+            { i: 'ductoMapa',      dx: 0, dy: 1, w: 5,  h: 4 },
+            { i: 'ductoAlerta',    dx: 5, dy: 1, w: 4,  h: 4 },
+            { i: 'ductoSegmentos', dx: 9, dy: 1, w: 3,  h: 4 },
+            { i: 'ductoPerfil',    dx: 0, dy: 5, w: 9,  h: 3 },
+            { i: 'ductoBalance',   dx: 9, dy: 5, w: 3,  h: 3 },
+        ],
+    },
+    eamTablero: {
+        title: 'Tablero Mantenimiento · Completo', color: C.purple, cat: 'Mantenimiento', Icon: LayoutTemplate, w: 12, h: 8,
+        desc: 'Inserta el Tablero de Mantenimiento (EAM): encabezado, salud de activos, flujo IA→refacción→orden (cerebro) y órdenes de trabajo. Cada bloque independiente.',
+        items: [
+            { i: 'eamBanner',  dx: 0, dy: 0, w: 12, h: 1 },
+            { i: 'eamSalud',   dx: 0, dy: 1, w: 7,  h: 6 },
+            { i: 'eamFlujo',   dx: 7, dy: 1, w: 5,  h: 3 },
+            { i: 'eamOrdenes', dx: 7, dy: 4, w: 5,  h: 3 },
+        ],
+    },
+    campoTablero: {
+        title: 'Tablero Campo · Completo', color: C.green, cat: 'Campo', Icon: LayoutTemplate, w: 12, h: 10,
+        desc: 'Inserta el Tablero de Campo: encabezado, mapa del campo, matriz de pozos, producción del día, alertas, bitácora de eventos, tanques, inventario HSE y la recomendación IA del turno. Cada bloque independiente.',
+        items: [
+            { i: 'campoBanner',     dx: 0, dy: 0, w: 12, h: 1 },
+            { i: 'mapa',            dx: 0, dy: 1, w: 5,  h: 4 },
+            { i: 'matriz',          dx: 5, dy: 1, w: 4,  h: 4 },
+            { i: 'prodHoy',         dx: 9, dy: 1, w: 3,  h: 2 },
+            { i: 'alertas',         dx: 9, dy: 3, w: 3,  h: 2 },
+            { i: 'eventos',         dx: 0, dy: 5, w: 5,  h: 3 },
+            { i: 'tanques',         dx: 5, dy: 5, w: 4,  h: 3 },
+            { i: 'hseEnergia',      dx: 9, dy: 5, w: 3,  h: 3 },
+            { i: 'campoRecomendIA', dx: 0, dy: 8, w: 12, h: 2 },
+        ],
+    },
     direccionTablero: {
         title: 'Tablero Dirección · Completo', color: C.purple, cat: 'Dirección', Icon: LayoutTemplate, w: 12, h: 12,
         desc: 'Inserta el Tablero de Dirección: encabezado, KPIs ejecutivos, cumplimiento CNE, pronóstico de cierre vs meta, NPT Pareto, curva de declinación, balance de fiscalización y la recomendación IA. Cada bloque independiente.',
@@ -1236,12 +1291,14 @@ const ALL_WELL_IDS = DEMO_WELLS.map((w) => w.id);
 const DEFAULT_SCREENS: { name: string; layout: LItem[] }[] = [
     {
         // CAMPO (operador / superintendente de campo): panorama operativo del día.
-        name: 'Pantalla 1 · Campo',
+        name: 'Tablero Campo',
         layout: [
-            { i: 'mapa', x: 0, y: 0, w: 5, h: 4 }, { i: 'matriz', x: 5, y: 0, w: 4, h: 4 },
-            { i: 'prodHoy', x: 9, y: 0, w: 3, h: 2 }, { i: 'alertas', x: 9, y: 2, w: 3, h: 2 },
-            { i: 'eventos', x: 0, y: 4, w: 5, h: 2 }, { i: 'tanques', x: 5, y: 4, w: 4, h: 2 },
-            { i: 'hseEnergia', x: 9, y: 4, w: 3, h: 2 },
+            { i: 'campoBanner', x: 0, y: 0, w: 12, h: 1 },
+            { i: 'mapa', x: 0, y: 1, w: 5, h: 4 }, { i: 'matriz', x: 5, y: 1, w: 4, h: 4 },
+            { i: 'prodHoy', x: 9, y: 1, w: 3, h: 2 }, { i: 'alertas', x: 9, y: 3, w: 3, h: 2 },
+            { i: 'eventos', x: 0, y: 5, w: 5, h: 3 }, { i: 'tanques', x: 5, y: 5, w: 4, h: 3 },
+            { i: 'hseEnergia', x: 9, y: 5, w: 3, h: 3 },
+            { i: 'campoRecomendIA', x: 0, y: 8, w: 12, h: 2 },
         ],
     },
     {
