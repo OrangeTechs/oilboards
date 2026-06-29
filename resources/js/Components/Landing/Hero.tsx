@@ -87,7 +87,7 @@ export default function Hero() {
                         className="mt-5 flex items-center gap-2 text-xs text-[#6B7280]"
                     >
                         <ShieldCheck size={14} className="text-[#10B981]" />
-                        <span>Sin costos por usuario · Marco regulatorio CNE/SENER y Pemex</span>
+                        <span>Sin costos por usuario · Marco regulatorio CNE/SENER y la empresa estatal</span>
                     </motion.div>
                 </div>
 
@@ -164,7 +164,7 @@ export default function Hero() {
                             <AlertTriangle size={16} className="text-[#F59E0B] mt-0.5 flex-shrink-0" />
                             <div>
                                 <div className="text-[10px] font-bold text-[#F59E0B]">ALERTA IA · POZO-102H</div>
-                                <div className="text-[9px] text-[#9CA3AF] mt-0.5">Riesgo de Gas-Lock. THP −12%, vibración 0.87 mm/s. ML + Claude.</div>
+                                <div className="text-[9px] text-[#9CA3AF] mt-0.5">Riesgo de Gas-Lock. THP −12%, vibración 0.87 mm/s. Motor IA Oilboards.</div>
                             </div>
                         </div>
                     </motion.div>

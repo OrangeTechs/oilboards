@@ -56,7 +56,7 @@ export default function ConfigAlertas() {
             </div>
 
             <p className="text-xs text-[#6B7280] mt-4">
-                Cuando una regla se dispara, la IA (Claude) genera el diagnóstico y la recomendación, y la alerta aparece en el centro de notificaciones y en la matriz de pozos.
+                Cuando una regla se dispara, el Motor de IA Oilboards genera el diagnóstico y la recomendación, y la alerta aparece en el centro de notificaciones y en la matriz de pozos.
             </p>
         </div>
     );

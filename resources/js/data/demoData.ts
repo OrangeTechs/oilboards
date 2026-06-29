@@ -55,6 +55,7 @@ export interface DemoWell {
   tempC: number;              // Temperatura de cabezal
   tempLineaC: number;         // TT · Temperatura de línea (control de parafinas)
   bhpPsi: number;
+  pipPsi: number;             // PIP · Presión de admisión de la bomba (BEC). Clave para gas-lock. 0 = N/A
   // --- Levantamiento artificial -------------------------------------------
   motorOn: boolean;           // ESTADO_MOTOR · aplica a BEC y BM
   motorHz: number;            // BEC · frecuencia del variador
@@ -84,7 +85,7 @@ export const DEMO_WELLS: DemoWell[] = [
   {
     id: 'pozo-101h', name: 'POZO-101H', liftType: 'BEC', status: 'active',
     latitude: 19.05, longitude: -92.45,
-    netOilBbl: 320, grossOilBbl: 390, thpPsi: 342, pcPsi: 178, flpPsi: 180, tempC: 68, tempLineaC: 61, bhpPsi: 2480,
+    netOilBbl: 320, grossOilBbl: 390, thpPsi: 342, pcPsi: 178, flpPsi: 180, tempC: 68, tempLineaC: 61, bhpPsi: 2480, pipPsi: 1240,
     motorOn: true, motorHz: 55, motorRpm: 3300, motorAmp: 42.1, spm: 0, vibrationMms: 0.42,
     bswPct: 18.0, gasMmscfd: 0.42, waterBbl: 70, gor: 1310, productionHours: 23.5, uptimePct: 95.8,
     chokeSize: '32/64"', depthM: 3420, equipment: { manufacturer: 'Schlumberger', model: 'REDA Maximus' },
@@ -92,7 +93,7 @@ export const DEMO_WELLS: DemoWell[] = [
   {
     id: 'pozo-102h', name: 'POZO-102H', liftType: 'BEC', status: 'alert',
     latitude: 19.12, longitude: -92.52,
-    netOilBbl: 285, grossOilBbl: 363, thpPsi: 298, pcPsi: 246, flpPsi: 175, tempC: 71, tempLineaC: 64, bhpPsi: 2310,
+    netOilBbl: 285, grossOilBbl: 363, thpPsi: 298, pcPsi: 246, flpPsi: 175, tempC: 71, tempLineaC: 64, bhpPsi: 2310, pipPsi: 820,
     motorOn: true, motorHz: 52, motorRpm: 3120, motorAmp: 48.3, spm: 0, vibrationMms: 0.87,
     bswPct: 21.5, gasMmscfd: 0.51, waterBbl: 78, gor: 1490, productionHours: 21.2, uptimePct: 88.2,
     chokeSize: '28/64"', depthM: 3510, equipment: { manufacturer: 'Baker Hughes', model: 'Centrilift GC6100' },
@@ -104,7 +105,7 @@ export const DEMO_WELLS: DemoWell[] = [
   {
     id: 'pozo-103', name: 'POZO-103', liftType: 'Gas Lift', status: 'active',
     latitude: 18.98, longitude: -92.38,
-    netOilBbl: 180, grossOilBbl: 232, thpPsi: 210, pcPsi: 880, flpPsi: 140, tempC: 65, tempLineaC: 58, bhpPsi: 1980,
+    netOilBbl: 180, grossOilBbl: 232, thpPsi: 210, pcPsi: 880, flpPsi: 140, tempC: 65, tempLineaC: 58, bhpPsi: 1980, pipPsi: 0,
     motorOn: false, motorHz: 0, motorRpm: 0, motorAmp: 0, spm: 0, vibrationMms: 0,
     bswPct: 22.3, gasMmscfd: 0.38, waterBbl: 52, gor: 1620, productionHours: 22.1, uptimePct: 92.1,
     chokeSize: '24/64"', depthM: 3120, equipment: { manufacturer: 'Weatherford', model: 'Gas Lift Valve' },
@@ -112,7 +113,7 @@ export const DEMO_WELLS: DemoWell[] = [
   {
     id: 'pozo-104', name: 'POZO-104', liftType: 'BM', status: 'down',
     latitude: 19.20, longitude: -92.60,
-    netOilBbl: 0, grossOilBbl: 0, thpPsi: 0, pcPsi: 0, flpPsi: 0, tempC: 40, tempLineaC: 38, bhpPsi: 0,
+    netOilBbl: 0, grossOilBbl: 0, thpPsi: 0, pcPsi: 0, flpPsi: 0, tempC: 40, tempLineaC: 38, bhpPsi: 0, pipPsi: 0,
     motorOn: false, motorHz: 0, motorRpm: 0, motorAmp: 0, spm: 0, vibrationMms: 0,
     bswPct: 0, gasMmscfd: 0, waterBbl: 0, gor: 0, productionHours: 19.5, uptimePct: 0,
     chokeSize: '—', depthM: 2890, nptMinutes: 270, equipment: { manufacturer: 'Lufkin', model: 'C-640D' },
@@ -120,7 +121,7 @@ export const DEMO_WELLS: DemoWell[] = [
   {
     id: 'pozo-105h', name: 'POZO-105H', liftType: 'BEC', status: 'active',
     latitude: 19.15, longitude: -92.30,
-    netOilBbl: 410, grossOilBbl: 487, thpPsi: 388, pcPsi: 196, flpPsi: 195, tempC: 72, tempLineaC: 66, bhpPsi: 2640,
+    netOilBbl: 410, grossOilBbl: 487, thpPsi: 388, pcPsi: 196, flpPsi: 195, tempC: 72, tempLineaC: 66, bhpPsi: 2640, pipPsi: 1360,
     motorOn: true, motorHz: 58, motorRpm: 3480, motorAmp: 44.7, spm: 0, vibrationMms: 0.38,
     bswPct: 15.8, gasMmscfd: 0.58, waterBbl: 77, gor: 1190, productionHours: 23.8, uptimePct: 98.1,
     chokeSize: '36/64"', depthM: 3680, equipment: { manufacturer: 'Schlumberger', model: 'REDA Maximus' },
@@ -128,7 +129,7 @@ export const DEMO_WELLS: DemoWell[] = [
   {
     id: 'pozo-106', name: 'POZO-106', liftType: 'Natural', status: 'active',
     latitude: 18.88, longitude: -92.48,
-    netOilBbl: 95, grossOilBbl: 138, thpPsi: 156, pcPsi: 88, flpPsi: 98, tempC: 60, tempLineaC: 54, bhpPsi: 1650,
+    netOilBbl: 95, grossOilBbl: 138, thpPsi: 156, pcPsi: 88, flpPsi: 98, tempC: 60, tempLineaC: 54, bhpPsi: 1650, pipPsi: 0,
     motorOn: false, motorHz: 0, motorRpm: 0, motorAmp: 0, spm: 0, vibrationMms: 0,
     bswPct: 31.2, gasMmscfd: 0.21, waterBbl: 43, gor: 1840, productionHours: 21.7, uptimePct: 90.5,
     chokeSize: '20/64"', depthM: 2740,
@@ -136,7 +137,7 @@ export const DEMO_WELLS: DemoWell[] = [
   {
     id: 'pozo-107h', name: 'POZO-107H', liftType: 'Gas Lift', status: 'intervention',
     latitude: 19.02, longitude: -92.65,
-    netOilBbl: 0, grossOilBbl: 0, thpPsi: 0, pcPsi: 0, flpPsi: 0, tempC: 38, tempLineaC: 36, bhpPsi: 0,
+    netOilBbl: 0, grossOilBbl: 0, thpPsi: 0, pcPsi: 0, flpPsi: 0, tempC: 38, tempLineaC: 36, bhpPsi: 0, pipPsi: 0,
     motorOn: false, motorHz: 0, motorRpm: 0, motorAmp: 0, spm: 0, vibrationMms: 0,
     bswPct: 0, gasMmscfd: 0, waterBbl: 0, gor: 0, productionHours: 0, uptimePct: 0,
     chokeSize: '—', depthM: 3340, equipment: { manufacturer: 'Weatherford', model: 'Gas Lift Valve' },
@@ -144,7 +145,7 @@ export const DEMO_WELLS: DemoWell[] = [
   {
     id: 'pozo-108', name: 'POZO-108', liftType: 'BM', status: 'active',
     latitude: 19.25, longitude: -92.35,
-    netOilBbl: 145, grossOilBbl: 193, thpPsi: 198, pcPsi: 112, flpPsi: 122, tempC: 63, tempLineaC: 57, bhpPsi: 1820,
+    netOilBbl: 145, grossOilBbl: 193, thpPsi: 198, pcPsi: 112, flpPsi: 122, tempC: 63, tempLineaC: 57, bhpPsi: 1820, pipPsi: 0,
     motorOn: true, motorHz: 0, motorRpm: 0, motorAmp: 31.5, spm: 8.5, vibrationMms: 0.21,
     bswPct: 24.7, gasMmscfd: 0.28, waterBbl: 48, gor: 1410, productionHours: 22.9, uptimePct: 91.3,
     chokeSize: '26/64"', depthM: 2950, equipment: { manufacturer: 'Lufkin', model: 'C-456D' },
@@ -560,9 +561,9 @@ export const DEMO_AUDIT: AuditLog[] = [
 // LOG DE IA (control de costos — ai_interactions)
 // ----------------------------------------------------------------------------
 export const DEMO_AI_INTERACTIONS = {
-  voiceStructuring: { calls: 2700, model: 'Claude Haiku', costUsd: 0.81 },
-  alertDiagnosis:   { calls: 50,   model: 'Claude Sonnet', costUsd: 0.60 },
-  assistantChat:    { calls: 20,   model: 'Claude Sonnet', costUsd: 0.60 },
+  voiceStructuring: { calls: 2700, model: 'Motor IA Oilboards · Voz', costUsd: 0.81 },
+  alertDiagnosis:   { calls: 50,   model: 'Motor IA Oilboards · Diagnóstico', costUsd: 0.60 },
+  assistantChat:    { calls: 20,   model: 'Motor IA Oilboards · Asistente', costUsd: 0.60 },
   totalUsd: 2.01,
 };
 
@@ -688,7 +689,7 @@ export const DEMO_EXPORTS = [
 
 export const DEMO_REPORT_TYPES = [
   { code: 'daily_operations', name: 'Reporte Diario de Operaciones', desc: 'Resumen ejecutivo, detalle por pozo, paros y NPT, incidentes HSE.', formats: ['PDF', 'Excel'], audience: 'Dirección · CNE/SENER' },
-  { code: 'npt_summary',      name: 'Resumen de Tiempos No Operativos', desc: 'Todos los paros del período por causa, con costo de producción diferida.', formats: ['PDF', 'Excel'], audience: 'Dirección · Pemex' },
+  { code: 'npt_summary',      name: 'Resumen de Tiempos No Operativos', desc: 'Todos los paros del período por causa, con costo de producción diferida.', formats: ['PDF', 'Excel'], audience: 'Dirección · empresa estatal' },
   { code: 'regulatory_cne',   name: 'Reporte de Cumplimiento CNE', desc: 'Meta vs. real por mes, % cumplimiento y estatus regulatorio.', formats: ['Excel'], audience: 'Regulador CNE/SENER' },
 ];
 
@@ -812,7 +813,7 @@ export const DEMO_PIPELINE_ALERT = {
   confidence: 'Alta',
   diagnosis: 'Caída de 18% en presión entre KP-42 y KP-57 inconsistente con el consumo programado por las centrales de CFE. La pérdida de 12.4 MMpcd supera en 3.8σ la varianza histórica del tramo.',
   recommendation: 'Despachar patrulla de inspección al tramo KP-42–KP-57 de inmediato. Notificar a ASEA conforme al Artículo 78 del RISEA. Considerar cierre de válvula de bloqueo V-42B hasta verificar integridad.',
-  source: 'ML + Claude API',
+  source: 'ML · Oilboards',
 };
 
 // ─────────────────────────────────────────────────────────────────
@@ -898,3 +899,189 @@ export const DEMO_CO2_EVENTS: Co2ConversionEvent[] = [
   { well: 'POZO-102H', date: '15 Jun', nptHours: 8.0,  gasVentedMpcd: 0.55, co2eTon: 3.3,  cause: 'Gas-lock (evento previo)' },
   { well: 'POZO-103',  date: '08 Jun', nptHours: 2.0,  gasVentedMpcd: 0.12, co2eTon: 0.7,  cause: 'Ajuste de cabezal' },
 ];
+
+// ----------------------------------------------------------------------------
+// MÓDULO 07 · POZOS 3D — Modelo del subsuelo (wellbore navegable)
+// Derivado de DEMO_WELLS para no contradecir la Matriz de Pozos. Geometría
+// procedural (sin assets). Profundidades en metros; el componente 3D escala.
+//   - trajectory: puntos {md, tvd, horiz} de la trayectoria (vertical → curva → lateral)
+//   - casings:    sartas de revestimiento telescópicas (zapata = bottomMd)
+//   - formations: estratos geológicos (yacimiento resaltado)
+//   - equipment:  equipo de fondo según el tipo de levantamiento
+//   - anomaly:    marcador a la profundidad relevante (solo pozos con evento)
+// ----------------------------------------------------------------------------
+export interface WellborePoint { md: number; tvd: number; horiz: number; }
+export interface Casing { label: string; topMd: number; bottomMd: number; odIn: number; }
+export interface Formation { name: string; topFrac: number; botFrac: number; color: string; reservoir?: boolean; }
+export interface DownholeEquipment {
+  kind: 'esp' | 'rod' | 'gaslift' | 'natural';
+  label: string;
+  md: number;                 // profundidad del equipo principal (bomba / No-go)
+  mandrelMds?: number[];      // gas lift: profundidad de mandriles
+}
+export interface WellboreAnomaly {
+  md: number; title: string; detail: string;
+  severity: 'high' | 'medium' | 'down' | 'intervention'; color: string;
+}
+export interface Wellbore {
+  wellId: string;
+  isHorizontal: boolean;
+  tdMd: number;               // profundidad total medida (MD)
+  tdTvd: number;              // profundidad vertical verdadera (TVD)
+  trajectory: WellborePoint[];
+  casings: Casing[];
+  formations: Formation[];
+  equipment: DownholeEquipment;
+  anomaly?: WellboreAnomaly;
+}
+
+// Estratos típicos de la cuenca (fracciones de la profundidad total) — el último
+// es el yacimiento productor, resaltado en color.
+const FORMATIONS: Formation[] = [
+  { name: 'Sedimentos recientes', topFrac: 0.00, botFrac: 0.10, color: '#6b5b4a' },
+  { name: 'Lutita superior',      topFrac: 0.10, botFrac: 0.33, color: '#4b5563' },
+  { name: 'Arenisca',             topFrac: 0.33, botFrac: 0.52, color: '#8a7a5c' },
+  { name: 'Caliza',               topFrac: 0.52, botFrac: 0.74, color: '#737d8c' },
+  { name: 'Lutita sello',         topFrac: 0.74, botFrac: 0.88, color: '#374151' },
+  { name: 'Yacimiento (arena productora)', topFrac: 0.88, botFrac: 1.00, color: '#10B981', reservoir: true },
+];
+
+function buildTrajectory(tvd: number, isHorizontal: boolean): { points: WellborePoint[]; tdMd: number } {
+  const pts: WellborePoint[] = [];
+  if (!isHorizontal) {
+    // Pozo vertical: MD = TVD
+    for (let i = 0; i <= 10; i++) {
+      const d = (tvd * i) / 10;
+      pts.push({ md: d, tvd: d, horiz: 0 });
+    }
+    return { points: pts, tdMd: tvd };
+  }
+  // Pozo horizontal: vertical → KOP → build de 90° → lateral en el yacimiento
+  const kopTvd = tvd * 0.7;               // kick-off point
+  const buildLen = tvd * 0.22;            // longitud de la sección de curvatura (radio largo)
+  const lateralLen = tvd * 0.32;          // alcance lateral dentro del yacimiento
+  let md = 0;
+  // Tramo vertical hasta KOP
+  for (let i = 0; i <= 7; i++) {
+    const d = (kopTvd * i) / 7;
+    pts.push({ md: d, tvd: d, horiz: 0 });
+  }
+  md = kopTvd;
+  // Build section: cuarto de círculo de radio R hasta la horizontal
+  const R = buildLen / (Math.PI / 2);
+  const steps = 8;
+  for (let i = 1; i <= steps; i++) {
+    const ang = (Math.PI / 2) * (i / steps);     // 0 → 90°
+    const tvdI = kopTvd + R * Math.sin(ang);
+    const horizI = R * (1 - Math.cos(ang));
+    md += (buildLen / steps);
+    pts.push({ md, tvd: tvdI, horiz: horizI });
+  }
+  // Lateral horizontal dentro del yacimiento
+  const baseTvd = pts[pts.length - 1].tvd;
+  const baseHoriz = pts[pts.length - 1].horiz;
+  for (let i = 1; i <= 6; i++) {
+    const h = baseHoriz + (lateralLen * i) / 6;
+    md += lateralLen / 6;
+    pts.push({ md, tvd: baseTvd, horiz: h });
+  }
+  return { points: pts, tdMd: md };
+}
+
+function buildEquipment(w: DemoWell): DownholeEquipment {
+  const lt = w.liftType;
+  const td = w.depthM;
+  if (lt === 'BEC') {
+    return { kind: 'esp', label: `BEC · ${w.equipment?.model ?? 'Bomba electrocentrífuga'}`, md: td * 0.84 };
+  }
+  if (lt === 'BM') {
+    return { kind: 'rod', label: `Balancín · bomba de fondo (${w.equipment?.model ?? 'BM'})`, md: td * 0.92 };
+  }
+  if (lt === 'Gas Lift') {
+    return { kind: 'gaslift', label: 'Bombeo neumático · mandriles de inyección', md: td * 0.78,
+      mandrelMds: [td * 0.30, td * 0.46, td * 0.60, td * 0.72] };
+  }
+  return { kind: 'natural', label: 'Flujo natural · aparejo de producción', md: td * 0.80 };
+}
+
+function buildAnomaly(w: DemoWell): WellboreAnomaly | undefined {
+  const td = w.depthM;
+  if (w.id === 'pozo-102h') {
+    return { md: td * 0.84, severity: 'high', color: '#F59E0B',
+      title: 'Riesgo de Gas-Lock en la BEC',
+      detail: 'Segregación de gas a la profundidad de la bomba: caída escalonada de THP + picos de vibración. Revisar frecuencia del variador. Sujeto a validación del ingeniero responsable.' };
+  }
+  if (w.id === 'pozo-104') {
+    return { md: td * 0.92, severity: 'down', color: '#EF4444',
+      title: 'Pozo parado — falla eléctrica',
+      detail: 'Tablero de control sin energía; bomba de fondo detenida. NPT en curso. Cuadrilla eléctrica en sitio.' };
+  }
+  if (w.id === 'pozo-107h') {
+    return { md: td * 0.55, severity: 'intervention', color: '#3B82F6',
+      title: 'Reparación mayor en curso',
+      detail: 'Intervención programada con equipo de workover. Recuperación de aparejo de gas lift para cambio de mandriles.' };
+  }
+  return undefined;
+}
+
+export const DEMO_WELLBORES: Record<string, Wellbore> = Object.fromEntries(
+  DEMO_WELLS.map((w) => {
+    const isHorizontal = w.name.endsWith('H');
+    const tvd = isHorizontal ? Math.round(w.depthM * 0.82) : w.depthM;  // MD>TVD en horizontales
+    const { points, tdMd } = buildTrajectory(tvd, isHorizontal);
+    const casings: Casing[] = [
+      { label: 'Conductor 30"',      topMd: 0, bottomMd: Math.round(tvd * 0.03), odIn: 30 },
+      { label: 'Superficial 13⅜"',   topMd: 0, bottomMd: Math.round(tvd * 0.24), odIn: 13.375 },
+      { label: 'Intermedio 9⅝"',     topMd: 0, bottomMd: Math.round(tvd * 0.66), odIn: 9.625 },
+      { label: 'Producción 7"',      topMd: 0, bottomMd: Math.round(tdMd * 0.97), odIn: 7 },
+    ];
+    return [w.id, {
+      wellId: w.id, isHorizontal, tdMd: Math.round(tdMd), tdTvd: tvd,
+      trajectory: points, casings, formations: FORMATIONS,
+      equipment: buildEquipment(w), anomaly: buildAnomaly(w),
+    } as Wellbore];
+  })
+);
+
+// ----------------------------------------------------------------------------
+// CARTA DINAMOMÉTRICA (dynacard) — diagnóstico estándar de bombeo mecánico.
+// Carga del vástago pulido (lb) vs. posición (% de carrera). El lazo cerrado y
+// su forma diagnostican el estado de la bomba de fondo (llenado, golpe de
+// fluido, interferencia de gas, varilla partida). Carta de SUPERFICIE.
+// Generada para POZO-108 (Lufkin C-456D, SPM 8.5) — llenado normal.
+// ----------------------------------------------------------------------------
+export interface DynaCard {
+  well: string; model: string; spm: number; strokeIn: number;
+  peakLoadLb: number; minLoadLb: number; diagnosis: string;
+  points: [number, number][]; // [posición %, carga lb]
+}
+
+export const DEMO_DYNACARD: DynaCard = (() => {
+  const N = 90;
+  const Wr = 9200;   // peso flotante de varillas (lb) — meseta inferior (downstroke)
+  const Wf = 4300;   // carga de fluido (lb) — se suma en upstroke
+  const sstep = (a: number, b: number, x: number) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const pts: [number, number][] = [];
+  for (let i = 0; i <= N; i++) {
+    const ang = (Math.PI * 2 * i) / N;          // ciclo completo
+    const pos = (1 - Math.cos(ang)) / 2;         // 0 abajo → 1 arriba → 0
+    const up = Math.sin(ang) >= 0;               // mitad de subida vs bajada
+    const noise = (Math.random() - 0.5) * Wf * 0.02;
+    let load: number;
+    if (up) {
+      // Pickup de fluido cerca del fondo, leve descarga cerca del tope
+      load = Wr + Wf * (sstep(0.04, 0.18, pos) - sstep(0.9, 1.0, pos) * 0.12) + noise;
+    } else {
+      // Downstroke: meseta inferior (sin carga de fluido), con leve curvatura
+      load = Wr + Wf * (0.05 + sstep(0.0, 0.1, 1 - pos) * 0.04) + noise;
+    }
+    pts.push([Math.round(pos * 1000) / 10, Math.round(load)]);
+  }
+  const loads = pts.map((p) => p[1]);
+  return {
+    well: 'POZO-108', model: 'Lufkin C-456D', spm: 8.5, strokeIn: 120,
+    peakLoadLb: Math.max(...loads), minLoadLb: Math.min(...loads),
+    diagnosis: 'Llenado completo de bomba · sin golpe de fluido ni interferencia de gas',
+    points: pts,
+  };
+})();

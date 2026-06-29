@@ -103,7 +103,7 @@ const modules = [
         description: 'Dashboard para dirección. Cumplimiento CNE/SENER, curva de declinación y asistente IA en español claro — sin necesidad de Excel.',
         variables: [
             'Producción total (Mbd)',
-            'Balance vs. Pemex',
+            'Balance vs. empresa estatal',
             'Pronóstico vs. real',
             'Eficiencia operativa (%)',
             'Costo por barril (USD)',

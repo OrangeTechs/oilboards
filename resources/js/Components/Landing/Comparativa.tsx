@@ -18,13 +18,13 @@ const rows = [
     {
         icon: BrainCircuit,
         feature: 'Análisis de información',
-        ob: { title: 'IA predictiva', desc: 'Motor híbrido (ML + Claude) que traduce datos a acciones en español claro.' },
+        ob: { title: 'IA predictiva', desc: 'Motor híbrido de IA propietario que traduce datos a acciones en español claro.' },
         trad: { title: 'Historiadores pasivos', desc: 'Gráficas frías que solo dicen qué falló ayer, no qué fallará mañana.' },
     },
     {
         icon: FileCheck2,
         feature: 'Cumplimiento regulatorio',
-        ob: { title: 'Nativo México', desc: 'Reportes CNE/SENER en un clic y balance exacto con Pemex.' },
+        ob: { title: 'Nativo México', desc: 'Reportes CNE/SENER en un clic y balance exacto con la empresa estatal.' },
         trad: { title: 'Nulo / rígido', desc: 'Requiere costosas consultorías externas para adaptar el sistema a las leyes locales.' },
     },
     {
@@ -60,7 +60,7 @@ export default function Comparativa() {
                         No es un SCADA más. <span className="text-gradient">Es otra categoría.</span>
                     </h2>
                     <p className="text-[#9CA3AF] text-base max-w-2xl mx-auto">
-                        Comparado con los proveedores tradicionales (SCADAs de Houston o Europa),
+                        Comparado con los SCADAs actuales,
                         Oilboards opera en otra liga de velocidad, costo y cumplimiento.
                     </p>
                 </motion.div>
@@ -74,7 +74,7 @@ export default function Comparativa() {
                     </div>
                     <div className="rounded-2xl border border-[#1F2937] bg-[#111827]/40 px-5 py-4 text-center">
                         <div className="text-lg font-bold text-[#9CA3AF] flex items-center justify-center gap-2">🏛️ Proveedores tradicionales</div>
-                        <div className="text-[11px] text-[#6B7280]">SCADAs de Houston / Europa</div>
+                        <div className="text-[11px] text-[#6B7280]">SCADAs actuales</div>
                     </div>
                 </div>
 

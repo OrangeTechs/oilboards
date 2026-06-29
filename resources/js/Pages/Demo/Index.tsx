@@ -12,6 +12,7 @@ import BitacoraNpt from './BitacoraNpt';
 import InventarioHse from './InventarioHse';
 import MatrizPozos from './MatrizPozos';
 import MapaCampo from './MapaCampo';
+import Pozos3D from './Pozos3D';
 import MonitorScada from './MonitorScada';
 import DiagnosticoMotores from './DiagnosticoMotores';
 import DosificacionQuimica from './DosificacionQuimica';
@@ -39,6 +40,7 @@ const TITLES: Record<Screen, string> = {
     'inventario-hse': 'Inventario Operativo · HSE y Energía',
     'matriz-pozos': 'Matriz de Pozos',
     'mapa-campo': 'Mapa del Campo',
+    'pozos-3d': 'Pozos 3D · Gemelo del Subsuelo',
     'monitor-scada': 'Monitor SCADA / Telemetría',
     'diagnostico-motores': 'Diagnóstico de Motores',
     'dosificacion-quimica': 'Dosificación Química',
@@ -67,6 +69,7 @@ const SCREENS: Record<Screen, React.ComponentType<any>> = {
     'inventario-hse': InventarioHse,
     'matriz-pozos': MatrizPozos,
     'mapa-campo': MapaCampo,
+    'pozos-3d': Pozos3D,
     'monitor-scada': MonitorScada,
     'diagnostico-motores': DiagnosticoMotores,
     'dosificacion-quimica': DosificacionQuimica,

@@ -3,7 +3,7 @@ import { Tooltip } from '@/Components/ui/Tooltip';
 
 export type Screen =
     | 'dashboard-campo' | 'reporte-diario' | 'consola-voz' | 'bitacora-npt' | 'inventario-hse'
-    | 'matriz-pozos' | 'mapa-campo' | 'monitor-scada' | 'diagnostico-motores' | 'dosificacion-quimica'
+    | 'matriz-pozos' | 'mapa-campo' | 'pozos-3d' | 'monitor-scada' | 'diagnostico-motores' | 'dosificacion-quimica'
     | 'kpis-ejecutivos' | 'cumplimiento-cne' | 'balance-fiscalizacion' | 'curva-declinacion' | 'asistente-ia'
     | 'centro-reportes' | 'config-alertas' | 'auditoria' | 'sincronizacion'
     | 'onboarding' | 'gestion-usuarios'
@@ -31,6 +31,7 @@ const groups: { label: string; icon: any; color: string; items: { id: Screen; la
         items: [
             { id: 'matriz-pozos', label: 'Matriz de Pozos' },
             { id: 'mapa-campo', label: 'Mapa del Campo' },
+            { id: 'pozos-3d', label: 'Pozos 3D' },
             { id: 'monitor-scada', label: 'Monitor SCADA' },
             { id: 'diagnostico-motores', label: 'Diagnóstico de Motores' },
             { id: 'dosificacion-quimica', label: 'Dosificación Química' },
@@ -86,12 +87,13 @@ export const SCREEN_DESC: Record<Screen, string> = {
     'inventario-hse': 'Inventario operativo, consumo de diésel/energía y eventos de seguridad (HSE).',
     'matriz-pozos': 'Semáforo de todos los pozos del activo con producción y presión de un vistazo.',
     'mapa-campo': 'Ubicación de los pozos con su estado y telemetría sobre el mapa del campo.',
+    'pozos-3d': 'Gemelo digital del subsuelo: trayectoria, revestimientos, estratigrafía y equipo de fondo en 3D.',
     'monitor-scada': 'Telemetría SCADA en vivo: presiones THP/FLP, gauges de motor y alerta predictiva.',
     'diagnostico-motores': 'Salud del motor (BEC/balancín): frecuencia, corriente y vibración con histórico.',
     'dosificacion-quimica': 'Inyección de químicos (inhibidores de parafina, corrosión, escala) por pozo.',
     'kpis-ejecutivos': 'Tablero ejecutivo: producción del mes, uptime, NPT, costo por barril y gas.',
     'cumplimiento-cne': 'Cumplimiento CNE/SENER: meta comprometida vs. producción real por mes.',
-    'balance-fiscalizacion': 'Conciliación de volumen neto vendible vs. balances de Pemex para fiscalización.',
+    'balance-fiscalizacion': 'Conciliación de volumen neto vendible vs. balances de la empresa estatal para fiscalización.',
     'curva-declinacion': 'Curva de declinación de producción del activo para planear intervenciones.',
     'asistente-ia': 'Asistente técnico que responde sobre manuales, historial de fallas y procedimientos.',
     'centro-reportes': 'Generación y descarga de reportes (PDF/Excel) para dirección y regulador.',

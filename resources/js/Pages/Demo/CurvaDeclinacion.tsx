@@ -13,10 +13,19 @@ export default function CurvaDeclinacion() {
         tooltip: { ...tooltipStyle, trigger: 'axis' },
         dataZoom: [{ type: 'inside' }, { type: 'slider', height: 16, bottom: 0, backgroundColor: C.surface, fillerColor: 'rgba(16,185,129,0.15)', borderColor: C.border, textStyle: { color: C.faint, fontSize: 9 } }],
         xAxis: axisX({ data: months, axisLabel: { color: C.faint, fontSize: 9, interval: 1 } }),
-        yAxis: axisY({ name: 'bbl/d', nameTextStyle: { color: C.faint, fontSize: 10 } }),
+        // Escala SEMI-LOG (tasa en log, tiempo lineal): la convención de análisis
+        // de declinación. En semi-log, la declinación exponencial es una recta,
+        // y así se estiman qi/Di y se extrapola el pronóstico.
+        yAxis: {
+            type: 'log', min: 1800, max: 3400,
+            name: 'bbl/d · escala semi-log', nameTextStyle: { color: C.faint, fontSize: 10 },
+            axisLine: { show: false },
+            axisLabel: { color: C.faint, fontSize: 10, formatter: (v: number) => Math.round(v).toLocaleString() },
+            splitLine: { lineStyle: { color: C.grid } },
+        },
         series: [
-            { name: 'Producción histórica', type: 'line', data: DEMO_DECLINE.map((d) => d.real), smooth: true, symbol: 'none', lineStyle: { color: C.green, width: 2.5 }, areaStyle: { color: areaGradient(C.green, 0.2) }, connectNulls: false },
-            { name: 'Pronóstico (declinación)', type: 'line', data: DEMO_DECLINE.map((d) => d.forecast), smooth: true, symbol: 'none', lineStyle: { color: C.yellow, width: 2, type: 'dashed' }, areaStyle: { color: areaGradient(C.yellow, 0.1) }, connectNulls: true },
+            { name: 'Producción histórica', type: 'line', data: DEMO_DECLINE.map((d) => d.real), smooth: false, symbol: 'none', lineStyle: { color: C.green, width: 2.5 }, connectNulls: false },
+            { name: 'Pronóstico (declinación)', type: 'line', data: DEMO_DECLINE.map((d) => d.forecast), smooth: false, symbol: 'none', lineStyle: { color: C.yellow, width: 2, type: 'dashed' }, connectNulls: true },
         ],
     };
 
@@ -29,7 +38,7 @@ export default function CurvaDeclinacion() {
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h2 className="text-lg font-bold text-white">Análisis de Yacimientos · Curva de Declinación</h2>
-                    <p className="text-sm text-[#9CA3AF]">Histórico de producción + pronóstico de declinación exponencial</p>
+                    <p className="text-sm text-[#9CA3AF]">Histórico + pronóstico · escala semi-log (la declinación exponencial se lee como recta)</p>
                 </div>
                 <select className="bg-[#0B0F19] border border-[#374151] text-white rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[#10B981]">
                     <option>{scope}</option>

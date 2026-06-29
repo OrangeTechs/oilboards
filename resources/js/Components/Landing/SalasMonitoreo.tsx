@@ -136,7 +136,7 @@ export default function SalasMonitoreo() {
                 <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
                     <SectionLabel>Salas de Monitoreo Virtuales</SectionLabel>
                     <h2 className="text-3xl lg:text-4xl font-extrabold text-white leading-tight mt-4 mb-6">
-                        Tu sala de control estilo NASA. <span className="text-gradient">Instalada en 48 horas.</span> Sin servidores locales.
+                        Tu sala de control estilo centro de mando aeroespacial. <span className="text-gradient">Instalada en 48 horas.</span> Sin servidores locales.
                     </h2>
                     <p className="text-[#9CA3AF] text-base leading-relaxed mb-8">
                         Las salas tradicionales exigen computadoras industriales costosas y licencias por

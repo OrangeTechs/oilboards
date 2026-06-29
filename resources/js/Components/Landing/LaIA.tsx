@@ -57,11 +57,11 @@ export default function LaIA() {
                             ))}
                         </div>
                         <div className="mt-4 bg-[#0B0F19] rounded-lg p-3 font-mono text-xs text-[#10B981]">
-                            XGBoost · Random Forest · Isolation Forest
+                            Motor propietario de detección de anomalías
                         </div>
                     </motion.div>
 
-                    {/* Block 2 — Claude */}
+                    {/* Block 2 — Ingeniero Virtual */}
                     <motion.div
                         initial={{ opacity: 0, x: 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -91,7 +91,7 @@ export default function LaIA() {
                             ))}
                         </div>
                         <div className="mt-4 bg-[#0B0F19] rounded-lg p-3 font-mono text-xs text-[#3B82F6]">
-                            Powered by Claude API · Anthropic
+                            Motor de IA Oilboards · Capa cognitiva
                         </div>
                     </motion.div>
                 </div>
@@ -145,7 +145,7 @@ export default function LaIA() {
                                     <span className="w-2 h-2 rounded-full bg-[#F59E0B] inline-block" />
                                     <span className="text-[#9CA3AF]">Confianza: <span className="text-[#F59E0B] font-semibold">Media</span></span>
                                 </span>
-                                <span className="text-xs text-[#6B7280]">ML + Claude</span>
+                                <span className="text-xs text-[#6B7280]">ML · Oilboards</span>
                             </div>
                         </div>
 

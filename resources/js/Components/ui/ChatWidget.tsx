@@ -9,7 +9,7 @@ interface Message {
 }
 
 const GREETING =
-    '👋 ¡Hola! Soy el asistente técnico de **Oilboards**. Pregúntame qué monitorea la plataforma, cómo funcionan los módulos o la Sala de Monitoreo Virtual.';
+    '👋 ¡Hola! Soy el **Asistente IA de Oilboards**. Pregúntame qué monitorea la plataforma, cómo funcionan los módulos o la Sala de Monitoreo Virtual.';
 
 // Persistencia en la sesión del navegador → conversación continua entre secciones,
 // entre landing y demo, e incluso al recargar. (Permitido en el droplet real.)
@@ -119,7 +119,7 @@ export default function ChatWidget({ section }: { section?: { title: string; des
                                 <Bot size={18} className="text-[#3B82F6]" />
                             </div>
                             <div className="min-w-0">
-                                <div className="text-sm font-bold text-white">Asistente de Oilboards</div>
+                                <div className="text-sm font-bold text-white">Asistente IA de Oilboards</div>
                                 <div className="text-[11px] text-[#10B981] flex items-center gap-1.5">
                                     <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] pulse-dot" /> En línea
                                 </div>
@@ -211,7 +211,7 @@ export default function ChatWidget({ section }: { section?: { title: string; des
                         className="max-w-[260px] text-left rounded-2xl rounded-br-sm bg-[#111827] border border-[#1F2937] px-4 py-3 shadow-xl hover:border-[#10B981]/50 transition-colors"
                     >
                         <div className="text-[13px] text-[#D1D5DB] leading-snug">
-                            👋 ¿Tienes dudas sobre <span className="font-semibold text-white">Oilboards</span>? Pregúntame lo que quieras.
+                            👋 Soy el <span className="font-semibold text-white">Asistente IA de Oilboards</span>. Pregúntame lo que quieras.
                         </div>
                         <div className="text-[10px] text-[#10B981] mt-1 font-semibold">Toca para chatear →</div>
                     </motion.button>

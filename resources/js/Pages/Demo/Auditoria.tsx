@@ -51,7 +51,7 @@ export default function Auditoria() {
             <p className="text-xs text-[#6B7280] mt-4 leading-relaxed">
                 Cada registro incluye el hash SHA-256 del registro anterior, formando una cadena
                 tamper-evident. Alterar cualquier evento rompe la cadena — es el respaldo inmutable
-                que sostiene las disputas de pago con Pemex.
+                que sostiene las disputas de pago con la empresa estatal.
             </p>
         </div>
     );

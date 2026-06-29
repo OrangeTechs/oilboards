@@ -23,7 +23,7 @@ export default function BalanceFiscalizacion() {
         <div className="p-6">
             <div className="mb-6">
                 <h2 className="text-lg font-bold text-white">Balance de Fiscalización y Venta</h2>
-                <p className="text-sm text-[#9CA3AF]">Conciliación de volumen producido vs. fiscalizado y entregado a Pemex</p>
+                <p className="text-sm text-[#9CA3AF]">Conciliación de volumen producido vs. fiscalizado y entregado a la empresa estatal</p>
             </div>
 
             <div className="grid sm:grid-cols-3 gap-4 mb-6">

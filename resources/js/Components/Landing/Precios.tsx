@@ -5,11 +5,11 @@ const features = [
     'Hasta 40 pozos activos por campo',
     'Usuarios e instalaciones de app móvil ilimitadas',
     'Integración con sistemas SCADA existentes',
-    'Motor de IA Predictiva completo (ML + Claude)',
+    'Motor de IA Predictiva completo (ML · Oilboards)',
     'Soporte técnico prioritario 24/7',
     'Salas de Monitoreo Virtuales',
     'Módulo de cumplimiento CNE/SENER',
-    'Exportación automática de reportes a Pemex',
+    'Exportación automática de reportes a la empresa estatal',
 ];
 
 export default function Precios() {

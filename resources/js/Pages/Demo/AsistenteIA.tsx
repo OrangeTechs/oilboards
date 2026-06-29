@@ -104,7 +104,7 @@ export default function AsistenteIA() {
                         <Bot size={18} className="text-[#3B82F6]" />
                     </div>
                     <div>
-                        <h2 className="text-sm font-bold text-white">Asistente Técnico Virtual</h2>
+                        <h2 className="text-sm font-bold text-white">Asistente IA de Oilboards</h2>
                         <p className="text-xs text-[#6B7280]">Activo Litoral Tabasco · Responde sobre manuales, historial y procedimientos</p>
                     </div>
                     <div className="ml-auto flex items-center gap-1.5 text-xs text-[#10B981]">

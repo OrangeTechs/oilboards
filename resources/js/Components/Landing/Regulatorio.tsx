@@ -5,7 +5,7 @@ const pillars = [
     {
         icon: Scale,
         title: 'Validación de Volumen Neto',
-        description: 'Cálculo automático del volumen neto que coincide con los balances de Pemex Exploración y Procura. Cero discrepancias, cero fricciones.',
+        description: 'Cálculo automático del volumen neto que coincide con los balances de la empresa productiva del Estado (exploración y comercialización). Cero discrepancias, cero fricciones.',
     },
     {
         icon: FileCheck,
@@ -15,7 +15,7 @@ const pillars = [
     {
         icon: Clock,
         title: 'Auditoría de NPT',
-        description: 'Respaldo histórico inmutable de cada evento de paro. Documenta causas, duración y resolución para resolver disputas con Pemex o subcontratistas.',
+        description: 'Respaldo histórico inmutable de cada evento de paro. Documenta causas, duración y resolución para resolver disputas con la empresa estatal o subcontratistas.',
     },
 ];
 
@@ -34,7 +34,7 @@ export default function Regulatorio() {
                         Cumplimiento Regulatorio
                     </div>
                     <h2 className="text-3xl lg:text-4xl font-extrabold text-white max-w-3xl mx-auto mb-4 leading-tight tracking-tight">
-                        Cero errores humanos. Conciliaciones con Pemex sin fricciones y <span className="text-gradient">reportes CNE en un clic.</span>
+                        Cero errores humanos. Conciliaciones con la empresa estatal sin fricciones y <span className="text-gradient">reportes CNE en un clic.</span>
                     </h2>
                     <p className="text-[#9CA3AF] text-base max-w-2xl mx-auto">
                         En el sector energético de México, un reporte con datos erróneos detiene
@@ -70,7 +70,7 @@ export default function Regulatorio() {
                     transition={{ duration: 0.7, delay: 0.5 }}
                     className="mt-12 pt-8 border-t border-[#374151] flex flex-wrap justify-center gap-8 text-sm text-[#6B7280]"
                 >
-                    {['CNE / SENER', 'ASEA', 'Pemex E&P', 'Pemex Procura', 'CNH (hist.)'].map((entity, i) => (
+                    {['CNE / SENER', 'ASEA', 'Empresa productiva del Estado', 'Transportista', 'Comercializadora'].map((entity, i) => (
                         <div key={i} className="flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-[#374151]" />
                             <span>{entity}</span>

@@ -100,8 +100,75 @@
   border: 1px solid rgba(55, 65, 81, 0.6);
 }
 
-.glow-green { box-shadow: 0 0 60px -12px rgba(16,185,129,0.45); }
-.glow-amber { box-shadow: 0 0 50px -12px rgba(245,158,11,0.4); }
+.glow-green { box-shadow: 0 0 34px -18px rgba(16,185,129,0.3); }
+.glow-amber { box-shadow: 0 0 30px -18px rgba(245,158,11,0.28); }
+
+/* ============================================================
+   WIDGETS PREMIUM 2.5D — profundidad, glow, sheen mission-control
+   ============================================================ */
+
+/* Superficie con profundidad: gradiente diagonal + highlight superior
+   interno + sombra exterior. La var --wc (widget color) la fija cada Frame. */
+.widget-surface {
+  position: relative;
+  background:
+    radial-gradient(120% 80% at 50% -10%, color-mix(in srgb, var(--wc, #3B82F6) 10%, transparent) 0%, transparent 55%),
+    linear-gradient(160deg, rgba(31,41,55,0.55) 0%, rgba(11,15,25,0.92) 60%);
+  box-shadow:
+    0 10px 30px -12px rgba(0,0,0,0.85),
+    inset 0 1px 0 0 rgba(255,255,255,0.06),
+    inset 0 0 0 1px color-mix(in srgb, var(--wc, #3B82F6) 22%, transparent);
+}
+/* sheen sutil que cruza el header de los widgets */
+.widget-surface::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.05) 45%, transparent 60%);
+  pointer-events: none;
+  opacity: 0; transition: opacity .4s ease;
+}
+.widget-surface:hover::before { opacity: 1; }
+
+/* Número métrico grande — FLAT: gradiente vertical sutil, sin glow (descansa la vista) */
+.metric-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background-image: linear-gradient(180deg, #ffffff 0%, var(--mc, #9CA3AF) 145%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* placa detrás de un número/gauge — FLAT: sin pozo de luz */
+.metric-well { background: transparent; }
+
+/* chip de delta (↑/↓) glossy */
+.delta-chip {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 1px 5px; border-radius: 999px;
+  font-size: 8px; font-weight: 700; font-family: 'JetBrains Mono', monospace;
+  background: color-mix(in srgb, var(--dc, #10B981) 16%, transparent);
+  color: var(--dc, #10B981);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--dc, #10B981) 35%, transparent);
+}
+
+/* fila de lista con profundidad (sustituye al bg-[#111827] plano) */
+.row-3d {
+  background: linear-gradient(180deg, rgba(31,41,55,0.5), rgba(17,24,39,0.5));
+  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.04), 0 1px 2px rgba(0,0,0,0.4);
+  border-radius: 6px;
+}
+
+/* punto/acento con anillo pulsante — FLAT: pulso de opacidad, sin halo de neón */
+@keyframes halo {
+  0%,100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hc, rgba(16,185,129,0.6)) 55%, transparent); }
+  50% { box-shadow: 0 0 0 3px transparent; }
+}
+.dot-halo { animation: halo 1.8s ease-in-out infinite; }
+
+/* barra de progreso interna — FLAT: relleno plano con gradiente, sin glow */
+.bar-3d { background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; box-shadow: inset 0 1px 1px rgba(0,0,0,0.4); }
+.bar-3d > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, color-mix(in srgb, var(--bc,#10B981) 65%, #000), var(--bc, #10B981)); }
 
 .text-gradient {
   background: linear-gradient(135deg, #F9FAFB 30%, #6EE7B7 100%);
