@@ -1870,6 +1870,7 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
     const [active, setActive]   = useState(0);
     const [editing, setEditing] = useState(false);
     const [wallOpen, setWallOpen] = useState(false);
+    const [screensDrawerOpen, setScreensDrawerOpen] = useState(false);
     const [configUid, setConfigUid] = useState<string | null>(null);
     // Fase 3: renombrar tab
     const [renamingIdx, setRenamingIdx] = useState<number | null>(null);
@@ -2021,6 +2022,14 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
 
     const switchScreen = (i: number) => { setFadeKey((k) => k + 1); setActive(i); };
 
+    // Eliminar pantalla (mínimo 1). Ajusta el índice activo.
+    const removeScreen = (i: number) => {
+        if (screens.length <= 1) return;
+        setScreens((prev) => prev.filter((_, idx) => idx !== i));
+        setActive((a) => (i < a ? a - 1 : Math.min(a, screens.length - 2)));
+        setFadeKey((k) => k + 1);
+    };
+
     const handleLayoutChange = (l: Layout[]) => {
         if (!editing) return;
         const norm = l.filter((it) => it.i !== '__drop__').map((it) => {
@@ -2046,31 +2055,16 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
             <div className="flex items-center justify-between px-4 py-2 border-b border-[#1F2937] flex-shrink-0 gap-2">
                 <div className="flex items-center gap-2 min-w-0">
                     <Grid2x2 size={15} className="text-[#10B981] flex-shrink-0" />
-                    <span className="text-sm font-bold text-white flex-shrink-0 hidden sm:inline">Sala de Monitoreo</span>
+                    <span className="text-sm font-bold text-white flex-shrink-0 hidden md:inline">Sala de Monitoreo</span>
 
-                    {/* Tabs de pantallas — Fase 3: renombrables */}
-                    <div className="flex items-center gap-1 ml-1 overflow-x-auto flex-nowrap">
-                        {screens.map((s, i) => (
-                            <div key={i} className="flex-shrink-0">
-                                {renamingIdx === i ? (
-                                    <input autoFocus value={renameVal} onChange={(e) => setRenameVal(e.target.value)}
-                                        onBlur={commitRename} onKeyDown={(e) => { if (e.key === 'Enter') commitRename(); if (e.key === 'Escape') setRenamingIdx(null); }}
-                                        className="text-[11px] bg-[#111827] border border-[#10B981] text-[#10B981] rounded-md px-2 py-0.5 w-28 focus:outline-none"
-                                    />
-                                ) : (
-                                    <button onClick={() => switchScreen(i)} onDoubleClick={() => startRename(i)}
-                                        className={`flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md transition-colors whitespace-nowrap ${active === i ? 'bg-[#10B981]/15 text-[#10B981]' : 'text-[#9CA3AF] hover:text-white hover:bg-[#1F2937]'}`}>
-                                        <Monitor size={10} /> {s.name}
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-                        {/* Fase 3: + Nueva pantalla */}
-                        <button onClick={addScreen} title="Nueva pantalla"
-                            className="flex-shrink-0 flex items-center gap-1 text-[11px] px-2 py-1 rounded-md text-[#6B7280] hover:text-[#10B981] hover:bg-[#1F2937] transition-colors">
-                            <Plus size={12} />
-                        </button>
-                    </div>
+                    {/* Selector de pantalla actual → abre el drawer de pantallas */}
+                    <button onClick={() => setScreensDrawerOpen((o) => !o)}
+                        className={`flex items-center gap-1.5 text-[12px] px-2.5 py-1 rounded-lg border transition-colors ml-1 ${screensDrawerOpen ? 'border-[#10B981]/50 bg-[#10B981]/10 text-[#10B981]' : 'border-[#374151] text-white hover:border-[#9CA3AF]'}`}>
+                        <Monitor size={12} className="text-[#10B981]" />
+                        <span className="font-semibold whitespace-nowrap max-w-[180px] truncate">{current.name}</span>
+                        <span className="text-[9px] text-[#6B7280]">{active + 1}/{screens.length}</span>
+                        <ChevronDown size={12} className="text-[#6B7280]" />
+                    </button>
                 </div>
 
                 <div className="flex items-center gap-2 flex-shrink-0">
@@ -2105,12 +2099,64 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
             {/* Hint de modo monitoreo */}
             {!editing && (
                 <div className="px-5 py-1.5 text-center text-[11px] text-[#6B7280] border-b border-[#1F2937]/50 flex-shrink-0">
-                    💡 Pulsa <span className="text-[#10B981]">Personalizar</span> para arrastrar, configurar y agregar bloques. Doble clic en una pestaña para renombrarla.
+                    💡 Pulsa <span className="text-[#10B981]">Personalizar</span> para arrastrar, configurar y agregar bloques. Abre <span className="text-[#10B981]">Pantallas</span> (arriba) para cambiar de sala, renombrar o crear nuevas.
                 </div>
             )}
 
             {/* ── Área principal ─────────────────────────────────────────────── */}
             <div className="flex-1 relative overflow-hidden">
+                {/* Drawer derecho de PANTALLAS — lista con mini-previews, reordenar, renombrar, +nueva */}
+                {screensDrawerOpen && (
+                    <>
+                        <div className="absolute inset-0 z-30 bg-black/40" onClick={() => setScreensDrawerOpen(false)} />
+                        <div className="absolute right-0 top-0 bottom-0 w-80 z-40 bg-[#0d1322]/95 backdrop-blur border-l border-[#1F2937] flex flex-col shadow-2xl">
+                            <div className="px-4 py-3 border-b border-[#1F2937] flex items-center justify-between flex-shrink-0">
+                                <div>
+                                    <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#10B981]">Pantallas</div>
+                                    <div className="text-[9px] text-[#6B7280] mt-0.5">{screens.length} salas · clic para abrir</div>
+                                </div>
+                                <button onClick={() => setScreensDrawerOpen(false)} className="text-[#6B7280] hover:text-white transition-colors"><X size={15} /></button>
+                            </div>
+                            <div className="flex-1 overflow-auto p-3 space-y-3">
+                                {screens.map((s, i) => (
+                                    <div key={i} className={`rounded-lg border transition-colors ${active === i ? 'border-[#10B981]/60' : 'border-[#1F2937]'}`}>
+                                        <div className="flex items-center justify-between px-2 py-1.5 gap-1">
+                                            {renamingIdx === i ? (
+                                                <input autoFocus value={renameVal} onChange={(e) => setRenameVal(e.target.value)}
+                                                    onBlur={commitRename} onKeyDown={(e) => { if (e.key === 'Enter') commitRename(); if (e.key === 'Escape') setRenamingIdx(null); }}
+                                                    className="text-[11px] bg-[#111827] border border-[#10B981] text-[#10B981] rounded px-1.5 py-0.5 w-full focus:outline-none" />
+                                            ) : (
+                                                <button onClick={() => switchScreen(i)} className="flex items-center gap-1.5 text-[11px] font-semibold truncate min-w-0 flex-1 text-left"
+                                                    style={{ color: active === i ? C.green : '#D1D5DB' }}>
+                                                    <Monitor size={11} className="flex-shrink-0" /> <span className="truncate">{s.name}</span>
+                                                </button>
+                                            )}
+                                            <div className="flex items-center gap-0.5 flex-shrink-0">
+                                                <button disabled={i === 0} onClick={() => moveScreen(i, i - 1)} title="Subir"
+                                                    className="p-0.5 rounded text-[#6B7280] hover:text-white hover:bg-[#1F2937] disabled:opacity-25"><ChevronLeft size={12} className="rotate-90" /></button>
+                                                <button disabled={i === screens.length - 1} onClick={() => moveScreen(i, i + 1)} title="Bajar"
+                                                    className="p-0.5 rounded text-[#6B7280] hover:text-white hover:bg-[#1F2937] disabled:opacity-25"><ChevronRight size={12} className="rotate-90" /></button>
+                                                <button onClick={() => startRename(i)} title="Renombrar"
+                                                    className="p-0.5 rounded text-[#6B7280] hover:text-[#10B981] hover:bg-[#1F2937]"><Pencil size={11} /></button>
+                                                <button disabled={screens.length <= 1} onClick={() => removeScreen(i)} title="Eliminar pantalla"
+                                                    className="p-0.5 rounded text-[#6B7280] hover:text-[#EF4444] hover:bg-[#1F2937] disabled:opacity-25"><Trash2 size={11} /></button>
+                                            </div>
+                                        </div>
+                                        <div className="px-2 pb-2">
+                                            <MiniScreen name={s.name} layout={s.layout} active={active === i} onClick={() => switchScreen(i)} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="px-3 py-3 border-t border-[#1F2937] flex-shrink-0">
+                                <button onClick={addScreen}
+                                    className="w-full flex items-center justify-center gap-1.5 py-2 text-[11px] font-semibold text-[#10B981] border border-[#10B981]/40 rounded-lg hover:bg-[#10B981]/10 transition-colors">
+                                    <Plus size={13} /> Nueva pantalla
+                                </button>
+                            </div>
+                        </div>
+                    </>
+                )}
                 {/* Drawer lateral */}
                 {editing && (
                     <div className="absolute left-0 top-0 bottom-0 w-72 z-40 bg-[#0d1322]/95 backdrop-blur border-r border-[#1F2937] flex flex-col">
