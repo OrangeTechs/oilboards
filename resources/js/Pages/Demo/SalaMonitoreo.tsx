@@ -1845,7 +1845,9 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
     const [screens, setScreens] = useState(() => JSON.parse(JSON.stringify(DEFAULT_SCREENS)) as typeof DEFAULT_SCREENS);
     const [active, setActive]   = useState(0);
     const [editing, setEditing] = useState(false);
-    const [wallOpen, setWallOpen] = useState(false);
+    // Entrada cinematográfica: al abrir la Sala se muestra "la pared" (overview de
+    // todas las salas) — vende el concepto de centro de control multi-pantalla.
+    const [wallOpen, setWallOpen] = useState(true);
     const [screensDrawerOpen, setScreensDrawerOpen] = useState(false);
     const [configUid, setConfigUid] = useState<string | null>(null);
     // Fase 3: renombrar tab
@@ -2294,8 +2296,8 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                 <div className="fixed inset-0 z-[9999] bg-black/95 flex flex-col p-6">
                     <div className="flex items-center justify-between mb-5 flex-shrink-0">
                         <div>
-                            <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#10B981]">Pared de Monitoreo</div>
-                            <div className="text-lg font-bold text-white">Tu sala completa · {screens.length} pantallas</div>
+                            <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#10B981]">Centro de Control · {DEMO_ASSET.name}</div>
+                            <div className="text-lg font-bold text-white">{screens.length} salas de monitoreo · elige una para entrar</div>
                         </div>
                         <button onClick={() => setWallOpen(false)}
                             className="flex items-center gap-2 text-xs text-[#9CA3AF] hover:text-white border border-[#374151] hover:border-[#9CA3AF] px-3 py-1.5 rounded-lg transition-colors">
@@ -2310,7 +2312,7 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                         ))}
                     </div>
                     <div className="text-center text-[11px] text-[#6B7280] mt-4 flex-shrink-0">
-                        Cada pantalla se monta en un monitor distinto · clic para ir a ella · ◀ ▶ para reordenar · doble clic en la pestaña para renombrarla.
+                        Cada pantalla se monta en un monitor distinto · clic para entrar a una sala · ◀ ▶ para reordenar.
                     </div>
                 </div>,
                 document.body

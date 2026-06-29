@@ -89,7 +89,8 @@
       "Bash(git commit -q -m 'Sala: drawer derecho de pantallas con mini-previews \\(reemplaza barra de pestañas apretada\\) *)",
       "Bash(pkill -f vite)",
       "Bash(pkill -f \"tsc\")",
-      "Bash(git commit -q -m 'Sala: limpiar pantallas default — 3 tableros \\(Campo/Telemetria/Direccion\\) + Mi Sala *)"
+      "Bash(git commit -q -m 'Sala: limpiar pantallas default — 3 tableros \\(Campo/Telemetria/Direccion\\) + Mi Sala *)",
+      "Bash(git commit -q -m 'Sala: entrada por '\\\\''la pared'\\\\'' \\(overview de salas\\) — vende el concepto multi-pantalla *)"
     ]
   }
 }
