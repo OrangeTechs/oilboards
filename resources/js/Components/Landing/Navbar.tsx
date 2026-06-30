@@ -26,10 +26,12 @@ export default function Navbar() {
                     <img src="/logo.png" alt="Oilboards" className="h-[37px] w-auto" />
                 </a>
 
-                <div className="hidden lg:flex items-center gap-7 text-sm text-[#9CA3AF]">
+                <div className="hidden lg:flex items-center gap-5 text-sm text-[#9CA3AF]">
                     <a href="#producto" className="hover:text-white transition-colors">Producto</a>
-                    <a href="#modulos" className="hover:text-white transition-colors">Módulos</a>
                     <a href="#salas" className="hover:text-white transition-colors">Salas</a>
+                    <a href="#modulos" className="hover:text-white transition-colors">Módulos</a>
+                    <a href="#flujo" className="hover:text-white transition-colors">Flujo</a>
+                    <a href="#regulatorio" className="hover:text-white transition-colors">Regulatorio</a>
                     <a href="#ia" className="hover:text-white transition-colors">IA</a>
                     <a href="#comparativa" className="hover:text-white transition-colors">Comparativa</a>
                     <a href="#precios" className="hover:text-white transition-colors">Precios</a>

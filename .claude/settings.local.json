@@ -103,7 +103,8 @@
       "Bash(echo \"BUILD_EXIT=$?\")",
       "Read(//tmp/**)",
       "Bash(echo \"TSC_EXIT=$?\")",
-      "Bash(git commit -q -m 'Sala: HUB de 3 columnas persistentes \\(Bloques/Centro/Pantallas\\) + centro responsive *)"
+      "Bash(git commit -q -m 'Sala: HUB de 3 columnas persistentes \\(Bloques/Centro/Pantallas\\) + centro responsive *)",
+      "Bash(git commit -q -m 'Landing: NAV completo y alineado a las secciones \\(+ Flujo + Regulatorio con ancla\\) *)"
     ]
   }
 }

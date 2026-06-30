@@ -21,7 +21,7 @@ const pillars = [
 
 export default function Regulatorio() {
     return (
-        <section className="relative py-24 overflow-hidden">
+        <section id="regulatorio" className="relative py-24 overflow-hidden scroll-mt-20">
             <div className="absolute inset-0 bg-[#0a0e17]" />
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <motion.div

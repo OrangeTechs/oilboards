@@ -29,7 +29,7 @@ const fuentes = [
 
 export default function FlujoDatos() {
     return (
-        <section className="relative py-24 overflow-hidden">
+        <section id="flujo" className="relative py-24 overflow-hidden scroll-mt-20">
             <div className="absolute inset-0 bg-[#0B0F19]" />
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <motion.div
