@@ -95,7 +95,8 @@
       "Bash(perl -0pi -e \"s/\\(title: 'Tablero Ductos · Completo', color: C\\\\.blue, cat: 'Ductos', Icon: LayoutTemplate, w: 12, h: \\)9/\\\\${1}8/\" resources/js/Pages/Demo/SalaMonitoreo.tsx)",
       "Bash(perl -0pi -e \"s/\\(title: 'Tablero Mantenimiento · Completo', color: C\\\\.purple, cat: 'Mantenimiento', Icon: LayoutTemplate, w: 12, h: \\)8/\\\\${1}7/\" resources/js/Pages/Demo/SalaMonitoreo.tsx)",
       "Bash(git commit -q -m 'Telemetria: selector de pozo en foco \\(banner + matriz clickeable\\) — gauges/SCADA/recomendacion siguen al pozo *)",
-      "Bash(git commit -q -m 'Landing: seccion '\\\\''Flujo de Operacion'\\\\'' — como llegan los datos a Oilboards \\(3 vias + IA + import\\) *)"
+      "Bash(git commit -q -m 'Landing: seccion '\\\\''Flujo de Operacion'\\\\'' — como llegan los datos a Oilboards \\(3 vias + IA + import\\) *)",
+      "Bash(git commit -q -m 'Sala: rowHeight dinamico — el tablero llena exacto el viewport \\(sin huecos ni scroll\\) *)"
     ]
   }
 }

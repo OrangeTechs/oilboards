@@ -1899,6 +1899,7 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
     const current  = screens[active];
     const uidSeq   = useRef(100); // arrancar en 100 para no chocar con ids de DEFAULT_SCREENS
     const gridScrollRef = useRef<HTMLDivElement>(null);
+    const dynRowRef = useRef(68); // rowHeight vigente (para el cálculo de soltar)
     const [ghost, setGhost] = useState<{ type: string; x: number; y: number } | null>(null);
     const dragMoved = useRef(false);
 
@@ -1964,7 +1965,7 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                 const pad = 8;
                 const colW = (el.clientWidth - pad * 2) / 12;
                 const x = Math.max(0, Math.min(11, Math.floor((ev.clientX - r.left - pad) / colW)));
-                const y = Math.max(0, Math.floor((ev.clientY - r.top - pad + el.scrollTop) / (68 + 8)));
+                const y = Math.max(0, Math.floor((ev.clientY - r.top - pad + el.scrollTop) / (dynRowRef.current + 8)));
                 insert(type, x, y);
             } else if (!dragMoved.current) {
                 insert(type);
@@ -2064,6 +2065,25 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
 
     // Grid guía (solo en edición): nº de filas a dibujar = fondo del contenido + colchón.
     const guideRows = Math.max(8, current.layout.reduce((m, l) => Math.max(m, l.y + l.h), 0) + 3);
+
+    // rowHeight DINÁMICO: la pantalla activa llena exacto el viewport (sin huecos ni
+    // scroll). Medimos el alto del contenedor y repartimos entre las filas de la
+    // pantalla. En edición usamos guideRows (deja espacio para soltar); en vivo, el
+    // contenido real. Clamp para que no se vuelva minúsculo en pantallas muy altas.
+    const [gridH, setGridH] = useState(0);
+    useEffect(() => {
+        const el = gridScrollRef.current;
+        if (!el) return;
+        const ro = new ResizeObserver(([e]) => setGridH(e.contentRect.height));
+        ro.observe(el);
+        return () => ro.disconnect();
+    }, []);
+    const contentRows = Math.max(1, current.layout.reduce((m, l) => Math.max(m, l.y + l.h), 0));
+    const fitRows = editing ? Math.max(contentRows, 8) : contentRows;
+    const dynRow = gridH > 0
+        ? Math.max(40, Math.floor((gridH - 16 - (fitRows + 1) * 8) / fitRows))
+        : 68;
+    dynRowRef.current = dynRow;
 
     return (
         <div className="fixed inset-0 bg-black z-50 flex flex-col">
@@ -2271,7 +2291,7 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                     {/* Grid guía: misma geometría que RGL (12 cols · filas 68px · gap 8px · padding 8px) */}
                     {editing && (
                         <div className="absolute pointer-events-none z-0 grid gap-2"
-                            style={{ top: 8, left: 8, right: 8, padding: 8, gridTemplateColumns: 'repeat(12, 1fr)', gridAutoRows: '68px' }}>
+                            style={{ top: 8, left: 8, right: 8, padding: 8, gridTemplateColumns: 'repeat(12, 1fr)', gridAutoRows: `${dynRow}px` }}>
                             {Array.from({ length: guideRows * 12 }).map((_, i) => (
                                 <div key={i} className="rounded-md border border-dashed border-[#10B981]/[0.08] bg-[#10B981]/[0.015]" />
                             ))}
@@ -2283,7 +2303,7 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                             className="layout"
                             layout={current.layout}
                             cols={12}
-                            rowHeight={68}
+                            rowHeight={dynRow}
                             margin={[8, 8]}
                             isDraggable={editing}
                             isResizable={editing}
