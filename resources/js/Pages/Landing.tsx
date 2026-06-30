@@ -4,6 +4,7 @@ import Hero from '@/Components/Landing/Hero';
 import MissionControl from '@/Components/Landing/MissionControl';
 import SalasMonitoreo from '@/Components/Landing/SalasMonitoreo';
 import LosTresModulos from '@/Components/Landing/LosTresModulos';
+import FlujoDatos from '@/Components/Landing/FlujoDatos';
 import Regulatorio from '@/Components/Landing/Regulatorio';
 import LaIA from '@/Components/Landing/LaIA';
 import Comparativa from '@/Components/Landing/Comparativa';
@@ -26,6 +27,7 @@ export default function Landing() {
                 <MissionControl />
                 <SalasMonitoreo />
                 <LosTresModulos />
+                <FlujoDatos />
                 <Regulatorio />
                 <LaIA />
                 <Comparativa />
