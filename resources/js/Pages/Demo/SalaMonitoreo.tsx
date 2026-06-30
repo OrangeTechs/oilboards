@@ -56,6 +56,7 @@ import {
     DuctosBanner, EamBanner,
 } from '@/Components/Demo/composites/DuctosEamPanel';
 import { useTelemWellId, setTelemWell } from '@/lib/telemSelection';
+import { loadScreens, saveScreens } from '@/lib/salaPersistence';
 import { Tooltip } from '@/Components/ui/Tooltip';
 import { DEMO_ASSET, DEMO_WELLS, DEMO_EVENTS, DEMO_MONTHLY_DATA, DEMO_NPT_BY_CATEGORY, STATUS_META,
     DEMO_PIPELINE_KPIS, DEMO_PIPELINE_ALERT, DEMO_PIPELINE_SEGMENTS, DEMO_PIPELINE_PRESSURE,
@@ -1880,8 +1881,10 @@ function AssetContext() {
 // Componente principal
 // ---------------------------------------------------------------------------
 export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
-    const [screens, setScreens] = useState(() => JSON.parse(JSON.stringify(DEFAULT_SCREENS)) as typeof DEFAULT_SCREENS);
+    // Carga persistida (localStorage) o defaults. Se guarda en cada cambio.
+    const [screens, setScreens] = useState(() => loadScreens(JSON.parse(JSON.stringify(DEFAULT_SCREENS)) as typeof DEFAULT_SCREENS));
     const [active, setActive]   = useState(0);
+    useEffect(() => { saveScreens(screens); }, [screens]);
     const [editing, setEditing] = useState(false);
     // Entrada cinematográfica: al abrir la Sala se muestra "la pared" (overview de
     // todas las salas) — vende el concepto de centro de control multi-pantalla.
