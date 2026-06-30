@@ -99,7 +99,11 @@
       "Bash(git commit -q -m 'Sala: rowHeight dinamico — el tablero llena exacto el viewport \\(sin huecos ni scroll\\) *)",
       "Bash(pkill -f \"esbuild\")",
       "Bash(git commit -q -m 'Sala: persistencia abstraida \\(salaPersistence\\) — pantallas sobreviven recarga *)",
-      "Bash(git commit -q -m 'Sala: entrar al HUB \\(pantalla activa\\) en vez de la pared \\(requerimiento sala.jpg\\) *)"
+      "Bash(git commit -q -m 'Sala: entrar al HUB \\(pantalla activa\\) en vez de la pared \\(requerimiento sala.jpg\\) *)",
+      "Bash(echo \"BUILD_EXIT=$?\")",
+      "Read(//tmp/**)",
+      "Bash(echo \"TSC_EXIT=$?\")",
+      "Bash(git commit -q -m 'Sala: HUB de 3 columnas persistentes \\(Bloques/Centro/Pantallas\\) + centro responsive *)"
     ]
   }
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect, useCallback, memo, lazy, Suspense, ReactNode } from 'react';
+import { useState, useMemo, useRef, useEffect, useLayoutEffect, useCallback, memo, lazy, Suspense, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import GridLayout, { WidthProvider, Layout } from 'react-grid-layout';
 import ReactECharts from 'echarts-for-react';
@@ -1889,7 +1889,9 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
     // La Sala carga como HUB: directo a la pantalla activa (requerimiento sala.jpg).
     // La pared (overview multi-monitor) queda en el botón "Ver pared".
     const [wallOpen, setWallOpen] = useState(false);
-    const [screensDrawerOpen, setScreensDrawerOpen] = useState(false);
+    // Columnas del HUB (persistentes, colapsables). Por default ambas visibles → 3 columnas.
+    const [blocksOpen, setBlocksOpen] = useState(true);
+    const [screensDrawerOpen, setScreensDrawerOpen] = useState(true);
     const [configUid, setConfigUid] = useState<string | null>(null);
     // Fase 3: renombrar tab
     const [renamingIdx, setRenamingIdx] = useState<number | null>(null);
@@ -1948,7 +1950,7 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
     }, [addGroup, addWidget]);
 
     const beginDrag = useCallback((type: string, e: React.PointerEvent) => {
-        if (!editing) return;
+        // La paleta de Bloques es columna persistente → se puede agregar siempre.
         e.preventDefault();
         dragMoved.current = false;
         setGhost({ type, x: e.clientX, y: e.clientY });
@@ -2074,15 +2076,20 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
     // pantalla. En edición usamos guideRows (deja espacio para soltar); en vivo, el
     // contenido real. Clamp para que no se vuelva minúsculo en pantallas muy altas.
     const [gridH, setGridH] = useState(0);
-    useEffect(() => {
+    useLayoutEffect(() => {
         const el = gridScrollRef.current;
         if (!el) return;
-        const ro = new ResizeObserver(([e]) => setGridH(e.contentRect.height));
+        const measure = () => setGridH(el.clientHeight);
+        measure();
+        const ro = new ResizeObserver(measure);
         ro.observe(el);
-        return () => ro.disconnect();
-    }, []);
+        window.addEventListener('resize', measure);
+        return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+        // Re-mide al cambiar de pantalla, columnas o modo edición (cambian el tamaño del centro).
+    }, [active, fadeKey, blocksOpen, screensDrawerOpen, editing]);
     const contentRows = Math.max(1, current.layout.reduce((m, l) => Math.max(m, l.y + l.h), 0));
     const fitRows = editing ? Math.max(contentRows, 8) : contentRows;
+    // El centro llena exacto su alto: rowHeight = (alto − padding − márgenes) / filas.
     const dynRow = gridH > 0
         ? Math.max(40, Math.floor((gridH - 16 - (fitRows + 1) * 8) / fitRows))
         : 68;
@@ -2096,11 +2103,17 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                     <Grid2x2 size={15} className="text-[#10B981] flex-shrink-0" />
                     <span className="text-sm font-bold text-white flex-shrink-0 hidden md:inline">Sala de Monitoreo</span>
 
-                    {/* Selector de pantalla actual → abre el drawer de pantallas */}
+                    {/* Toggle columna de Bloques (izquierda) */}
+                    <button onClick={() => setBlocksOpen((o) => !o)} title="Mostrar/ocultar Bloques"
+                        className={`flex items-center gap-1 text-[11px] px-2 py-1 rounded-lg border transition-colors ml-1 ${blocksOpen ? 'border-[#10B981]/50 bg-[#10B981]/10 text-[#10B981]' : 'border-[#374151] text-[#9CA3AF] hover:border-[#9CA3AF]'}`}>
+                        <LayoutTemplate size={12} /> <span className="hidden lg:inline">Bloques</span>
+                    </button>
+
+                    {/* Selector de pantalla actual → muestra/oculta la columna de Pantallas */}
                     <button onClick={() => setScreensDrawerOpen((o) => !o)}
-                        className={`flex items-center gap-1.5 text-[12px] px-2.5 py-1 rounded-lg border transition-colors ml-1 ${screensDrawerOpen ? 'border-[#10B981]/50 bg-[#10B981]/10 text-[#10B981]' : 'border-[#374151] text-white hover:border-[#9CA3AF]'}`}>
+                        className={`flex items-center gap-1.5 text-[12px] px-2.5 py-1 rounded-lg border transition-colors ${screensDrawerOpen ? 'border-[#10B981]/50 bg-[#10B981]/10 text-[#10B981]' : 'border-[#374151] text-white hover:border-[#9CA3AF]'}`}>
                         <Monitor size={12} className="text-[#10B981]" />
-                        <span className="font-semibold whitespace-nowrap max-w-[180px] truncate">{current.name}</span>
+                        <span className="font-semibold whitespace-nowrap max-w-[160px] truncate">{current.name}</span>
                         <span className="text-[9px] text-[#6B7280]">{active + 1}/{screens.length}</span>
                         <ChevronDown size={12} className="text-[#6B7280]" />
                     </button>
@@ -2142,13 +2155,11 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                 </div>
             )}
 
-            {/* ── Área principal ─────────────────────────────────────────────── */}
-            <div className="flex-1 relative overflow-hidden">
-                {/* Drawer derecho de PANTALLAS — lista con mini-previews, reordenar, renombrar, +nueva */}
+            {/* ── Área principal · HUB de 3 columnas (Bloques · Centro · Pantallas) ── */}
+            <div className="flex-1 flex overflow-hidden relative">
+                {/* Columna derecha · PANTALLAS (persistente, order-3) */}
                 {screensDrawerOpen && (
-                    <>
-                        <div className="absolute inset-0 z-30 bg-black/40" onClick={() => setScreensDrawerOpen(false)} />
-                        <div className="absolute right-0 top-0 bottom-0 w-80 z-40 bg-[#0d1322]/95 backdrop-blur border-l border-[#1F2937] flex flex-col shadow-2xl">
+                        <div className="order-3 w-80 flex-shrink-0 z-20 bg-[#0d1322] border-l border-[#1F2937] flex flex-col">
                             <div className="px-4 py-3 border-b border-[#1F2937] flex items-center justify-between flex-shrink-0">
                                 <div>
                                     <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#10B981]">Pantallas</div>
@@ -2194,11 +2205,10 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                                 </button>
                             </div>
                         </div>
-                    </>
                 )}
-                {/* Drawer lateral */}
-                {editing && (
-                    <div className="absolute left-0 top-0 bottom-0 w-72 z-40 bg-[#0d1322]/95 backdrop-blur border-r border-[#1F2937] flex flex-col">
+                {/* Columna izquierda · BLOQUES (persistente, order-1) */}
+                {blocksOpen && (
+                    <div className="order-1 w-72 flex-shrink-0 z-20 bg-[#0d1322] border-r border-[#1F2937] flex flex-col">
                         <div className="px-4 py-3 border-b border-[#1F2937]">
                             <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#10B981]">Bloques</div>
                             <div className="text-[10px] text-[#6B7280] mt-0.5">Arrástralos o haz clic · ⚙️ para configurar</div>
@@ -2280,9 +2290,9 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
                     </div>
                 )}
 
-                {/* Grid canvas — Fase 3: fade-in al cambiar pantalla */}
+                {/* Columna central · PANTALLA ACTIVA (order-2, llena el espacio restante) */}
                 <div ref={gridScrollRef}
-                    className={`h-full overflow-auto p-2 relative ${editing ? 'ml-72' : ''} ${ghost ? 'ring-2 ring-[#10B981]/30 ring-inset rounded' : ''}`}>
+                    className={`order-2 flex-1 min-w-0 h-full overflow-hidden p-2 relative ${ghost ? 'ring-2 ring-[#10B981]/30 ring-inset rounded' : ''}`}>
                     {editing && current.layout.length === 0 && (
                         <div className="absolute inset-3 rounded-xl border-2 border-dashed border-[#1F2937] flex flex-col items-center justify-center text-center pointer-events-none">
                             <LayoutGrid size={28} className="text-[#374151] mb-3" />
