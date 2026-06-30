@@ -1886,9 +1886,9 @@ export default function SalaMonitoreo({ onExit }: { onExit: () => void }) {
     const [active, setActive]   = useState(0);
     useEffect(() => { saveScreens(screens); }, [screens]);
     const [editing, setEditing] = useState(false);
-    // Entrada cinematográfica: al abrir la Sala se muestra "la pared" (overview de
-    // todas las salas) — vende el concepto de centro de control multi-pantalla.
-    const [wallOpen, setWallOpen] = useState(true);
+    // La Sala carga como HUB: directo a la pantalla activa (requerimiento sala.jpg).
+    // La pared (overview multi-monitor) queda en el botón "Ver pared".
+    const [wallOpen, setWallOpen] = useState(false);
     const [screensDrawerOpen, setScreensDrawerOpen] = useState(false);
     const [configUid, setConfigUid] = useState<string | null>(null);
     // Fase 3: renombrar tab

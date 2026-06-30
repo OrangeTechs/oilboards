@@ -98,7 +98,8 @@
       "Bash(git commit -q -m 'Landing: seccion '\\\\''Flujo de Operacion'\\\\'' — como llegan los datos a Oilboards \\(3 vias + IA + import\\) *)",
       "Bash(git commit -q -m 'Sala: rowHeight dinamico — el tablero llena exacto el viewport \\(sin huecos ni scroll\\) *)",
       "Bash(pkill -f \"esbuild\")",
-      "Bash(git commit -q -m 'Sala: persistencia abstraida \\(salaPersistence\\) — pantallas sobreviven recarga *)"
+      "Bash(git commit -q -m 'Sala: persistencia abstraida \\(salaPersistence\\) — pantallas sobreviven recarga *)",
+      "Bash(git commit -q -m 'Sala: entrar al HUB \\(pantalla activa\\) en vez de la pared \\(requerimiento sala.jpg\\) *)"
     ]
   }
 }
